@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>YanKicks - Premium Athletic Footwear</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <img src="assets/images/yankicks_logo.jpg" alt="YanKicks Logo">
+                <span>YanKicks</span>
+            </div>
+            <ul class="nav-links">
+                <li><a href="index.html" class="active">Home</a></li>
+                <li><a href="shop.html">Shop</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="contact.html">Contact</a></li>
+            </ul>
+            <div class="nav-cart">
+                <button class="cart-btn" id="cartBtn">
+                    <span class="cart-icon">🛒</span>
+                    <span class="cart-count" id="cartCount">0</span>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <aside class="cart-sidebar" id="cartSidebar">
+        <div class="cart-header">
+            <h2>Your Cart</h2>
+            <button class="close-cart" id="closeCart">&times;</button>
+        </div>
+        <div class="cart-items" id="cartItems"></div>
+        <div class="cart-footer">
+            <div class="cart-total">
+                <strong>Total:</strong>
+                <span id="cartTotal">$0.00</span>
+            </div>
+            <button class="checkout-btn">Proceed to Checkout</button>
+        </div>
+    </aside>
+
+    <header class="hero">
+        <div class="hero-content">
+            <h1>Just Do It</h1>
+            <p>Experience Premium Athletic Footwear Designed for Champions</p>
+            <a href="shop.html" class="hero-btn">Shop Now</a>
+        </div>
+    </header>
+
+    <section class="featured">
+        <div class="container">
+            <h2>Featured Collections</h2>
+            <div class="collection-grid">
+                <div class="collection-card">
+                    <img src="/assets/images/running_shoes.jpeg" alt="Running Collection">
+                    <h3>Running</h3>
+                    <p>Engineered for speed and comfort</p>
+                </div>
+                <div class="collection-card">
+                    <img src="/assets/images/basketball_shoes.jpg" alt="Basketball Collection">
+                    <h3>Basketball</h3>
+                    <p>Built for performance on the court</p>
+                </div>
+                <div class="collection-card">
+                    <img src="/assets/images/lifestyle_shoes.jpg" alt="Lifestyle Collection">
+                    <h3>Lifestyle</h3>
+                    <p>Style meets everyday functionality</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="values">
+        <div class="container">
+            <h2>Why Choose YanKicks</h2>
+            <div class="values-grid">
+                <div class="value-item">
+                    <h3>Premium Quality</h3>
+                    <p>Crafted with the finest materials and cutting-edge technology</p>
+                </div>
+                <div class="value-item">
+                    <h3>Innovative Design</h3>
+                    <p>Combining style with unmatched performance</p>
+                </div>
+                <div class="value-item">
+                    <h3>Sustainability</h3>
+                    <p>Committed to ethical production practices</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h4>About Us</h4>
+                    <ul>
+                        <li><a href="#">Our Story</a></li>
+                        <li><a href="#">Careers</a></li>
+                        <li><a href="#">Sustainability</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Support</h4>
+                    <ul>
+                        <li><a href="#">Contact Us</a></li>
+                        <li><a href="#">Shipping Info</a></li>
+                        <li><a href="#">Returns</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Legal</h4>
+                    <ul>
+                        <li><a href="#">Privacy Policy</a></li>
+                        <li><a href="#">Terms of Service</a></li>
+                        <li><a href="#">Cookies</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Follow Us</h4>
+                    <div class="social-links">
+                        <a href="#">Facebook</a>
+                        <a href="#">Instagram</a>
+                        <a href="#">Twitter</a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2023 YanKicks. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
