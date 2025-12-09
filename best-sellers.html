@@ -3,14 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Contact Us - YanKicks</title>
+    <title>Best Sellers - YanKicks</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <nav class="navbar">
         <div class="nav-container">
             <div class="nav-logo">
-                <img src="/assets/images/yankicks_logo.jpg" alt="YanKicks Logo">
+                <img src="assets/images/yankicks_logo.jpg" alt="YanKicks Logo">
                 <span>YanKicks</span>
             </div>
             <ul class="nav-links">
@@ -19,7 +19,7 @@
                 <li><a href="about.html">About Us</a></li>
                 <li><a href="customer-service.html">Customer Service</a></li>
                 <li><a href="blog.html">Blog</a></li>
-                <li><a href="contact.html" class="active">Contact Us</a></li>
+                <li><a href="contact.html">Contact Us</a></li>
                 <li><a href="legal.html">Legal</a></li>
             </ul>
             <div class="nav-cart">
@@ -56,54 +56,13 @@
         </div>
     </aside>
 
-    <main class="contact-page">
+    <main class="shop-page">
         <div class="container">
-            <div class="contact-header">
-                <h1>Get in Touch</h1>
-                <p>We'd love to hear from you. Send us a message!</p>
+            <div class="shop-header">
+                <h1>Best Sellers</h1>
+                <p>Our most popular and highly-rated products</p>
             </div>
-
-            <div class="contact-content">
-                <form class="contact-form" id="contactForm">
-                    <div class="form-group">
-                        <label for="name">Full Name</label>
-                        <input type="text" id="name" name="name" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="email">Email Address</label>
-                        <input type="email" id="email" name="email" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="subject">Subject</label>
-                        <input type="text" id="subject" name="subject" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="message">Message</label>
-                        <textarea id="message" name="message" rows="6" required></textarea>
-                    </div>
-                    <button type="submit" class="submit-btn">Send Message</button>
-                </form>
-
-                <div class="contact-info">
-                    <h2>Contact Information</h2>
-                    <div class="info-item">
-                        <h3>Email</h3>
-                        <p>yankicks.support@gmail.com</p>
-                    </div>
-                    <div class="info-item">
-                        <h3>Phone</h3>
-                        <p>+63 999 473 7196</p>
-                    </div>
-                    <div class="info-item">
-                        <h3>Address</h3>
-                        <p>360 San Agustin Village<br>Binan, Laguna<br>Philippines</p>
-                    </div>
-                    <div class="info-item">
-                        <h3>Business Hours</h3>
-                        <p>Monday - Friday: 9AM - 6PM<br>Saturday: 10AM - 4PM<br>Sunday: Closed</p>
-                    </div>
-                </div>
-            </div>
+            <div class="products-grid" id="productsGrid"></div>
         </div>
     </main>
 
@@ -152,5 +111,13 @@
     </footer>
 
     <script src="script.js"></script>
+    <script>
+        // Display only 5-star rated products (best sellers)
+        document.addEventListener('DOMContentLoaded', () => {
+            const bestSellers = products.filter(p => p.rating === 5);
+            displayProducts(bestSellers);
+        });
+    </script>
 </body>
 </html>
+
