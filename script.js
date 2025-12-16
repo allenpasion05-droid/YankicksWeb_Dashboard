@@ -1,153 +1,5 @@
-// Currency conversion: USD to PHP (approximate rate: 1 USD = 56 PHP)
-const USD_TO_PHP = 56;
-
-// Product Database
-const products = [
-    {
-        id: 1,
-        name: 'AeroSpeed Pro',
-        category: 'running',
-        price: 149.99 * USD_TO_PHP,
-        image: '/assets/images/aerospeedpro_shop.jpg',
-        rating: 5
-    },
-    {
-        id: 2,
-        name: 'CloudRun Elite',
-        category: 'running',
-        price: 159.99 * USD_TO_PHP,
-        image: '/assets/images/cloudrunelite_shop.jpg',
-        rating: 5
-    },
-    {
-        id: 3,
-        name: 'SprintForce',
-        category: 'running',
-        price: 139.99 * USD_TO_PHP,
-        image: '/assets/images/sprintforce_shop.jpg',
-        rating: 4
-    },
-    {
-        id: 4,
-        name: 'CourtKing Pro',
-        category: 'basketball',
-        price: 189.99 * USD_TO_PHP,
-        image: '/assets/images/courtkingpro_shop.jpg',
-        rating: 5
-    },
-    {
-        id: 5,
-        name: 'SlamDunk Ultra',
-        category: 'basketball',
-        price: 179.99 * USD_TO_PHP,
-        image: '/assets/images/slamdunkultra_shop.jpg',
-        rating: 5
-    },
-    {
-        id: 6,
-        name: 'StreetBall Classic',
-        category: 'basketball',
-        price: 169.99 * USD_TO_PHP,
-        image: '/assets/images/streetballclassic_shop.jpg',
-        rating: 4
-    },
-    {
-        id: 7,
-        name: 'UrbanStyle Plus',
-        category: 'lifestyle',
-        price: 119.99 * USD_TO_PHP,
-        image: '/assets/images/ubanstyle_shop.jpg',
-        rating: 4
-    },
-    {
-        id: 8,
-        name: 'CityWalk Premium',
-        category: 'lifestyle',
-        price: 129.99 * USD_TO_PHP,
-        image: '/assets/images/citywalkpremium_shop.jpg',
-        rating: 5
-    },
-    {
-        id: 9,
-        name: 'StreetStyle Signature',
-        category: 'lifestyle',
-        price: 139.99 * USD_TO_PHP,
-        image: '/assets/images/streetstylesignature_shop.jpg',
-        rating: 4
-    },
-    {
-        id: 10,
-        name: 'TurboRun Max',
-        category: 'running',
-        price: 174.99 * USD_TO_PHP,
-        image: '/assets/images/running_shoes.jpeg',
-        rating: 5
-    },
-    {
-        id: 11,
-        name: 'Velocity Elite',
-        category: 'running',
-        price: 164.99 * USD_TO_PHP,
-        image: '/assets/images/running_shoes.jpeg',
-        rating: 5
-    },
-    {
-        id: 12,
-        name: 'HoopsMaster Pro',
-        category: 'basketball',
-        price: 199.99 * USD_TO_PHP,
-        image: '/assets/images/basketball_shoes.jpg',
-        rating: 5
-    },
-    {
-        id: 13,
-        name: 'JumpForce Supreme',
-        category: 'basketball',
-        price: 194.99 * USD_TO_PHP,
-        image: '/assets/images/basketball_shoes.jpg',
-        rating: 4
-    },
-    {
-        id: 14,
-        name: 'CasualComfort Pro',
-        category: 'lifestyle',
-        price: 144.99 * USD_TO_PHP,
-        image: '/assets/images/lifestyle_shoes.jpg',
-        rating: 5
-    },
-    {
-        id: 15,
-        name: 'MetroWalk Classic',
-        category: 'lifestyle',
-        price: 134.99 * USD_TO_PHP,
-        image: '/assets/images/lifestyle_shoes.jpg',
-        rating: 4
-    },
-    {
-        id: 16,
-        name: 'TrailBlazer X',
-        category: 'running',
-        price: 184.99 * USD_TO_PHP,
-        image: '/assets/images/running_shoes.jpeg',
-        rating: 5
-    },
-    {
-        id: 17,
-        name: 'ArenaPro Champion',
-        category: 'basketball',
-        price: 209.99 * USD_TO_PHP,
-        image: '/assets/images/basketball_shoes.jpg',
-        rating: 5
-    },
-    {
-        id: 18,
-        name: 'UrbanFlex Premium',
-        category: 'lifestyle',
-        price: 154.99 * USD_TO_PHP,
-        image: '/assets/images/lifestyle_shoes.jpg',
-        rating: 5
-    }
-];
+// Products array (fetched from PHP)
+let products = [];
 
 // Cart State
 let cart = [];
@@ -159,9 +11,20 @@ document.addEventListener('DOMContentLoaded', () => {
     
     // Load shop page content if on shop page
     if (document.getElementById('productsGrid')) {
-        displayProducts(products);
+        fetchProducts();
     }
 });
+
+// Fetch products from PHP API
+function fetchProducts() {
+    fetch('api/products.php')
+        .then(res => res.json())
+        .then(data => {
+            products = data;
+            displayProducts(products);
+        })
+        .catch(err => console.error('Error fetching products:', err));
+}
 
 // Initialize Cart from localStorage
 function initializeCart() {
@@ -226,7 +89,7 @@ function displayProducts(productsToDisplay) {
             <div class="product-info">
                 <div class="product-category">${product.category}</div>
                 <h3 class="product-name">${product.name}</h3>
-                <div class="product-price">₱${product.price.toFixed(2)}</div>
+                <div class="product-price">₱${parseFloat(product.price).toFixed(2)}</div>
                 <div class="product-rating">
                     ${'★'.repeat(product.rating)}${'☆'.repeat(5 - product.rating)} (${product.rating}.0)
                 </div>
@@ -240,8 +103,8 @@ function displayProducts(productsToDisplay) {
 
 // Add to Cart
 function addToCart(productId) {
-    const product = products.find(p => p.id === productId);
-    const cartItem = cart.find(item => item.id === productId);
+    const product = products.find(p => parseInt(p.id) === parseInt(productId));
+    const cartItem = cart.find(item => parseInt(item.id) === parseInt(productId));
 
     if (cartItem) {
         cartItem.quantity++;
@@ -278,7 +141,7 @@ function updateCartUI() {
         <div class="cart-item">
             <div class="cart-item-info">
                 <h3>${item.name}</h3>
-                <p>₱${item.price.toFixed(2)} × ${item.quantity}</p>
+                <p>₱${parseFloat(item.price).toFixed(2)} × ${item.quantity}</p>
             </div>
             <div class="cart-item-actions">
                 <button class="quantity-btn" onclick="updateQuantity(${item.id}, -1)">−</button>
@@ -289,7 +152,7 @@ function updateCartUI() {
         </div>
     `).join('');
 
-    const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+    const total = cart.reduce((sum, item) => sum + (parseFloat(item.price) * item.quantity), 0);
     if (cartTotal) {
         cartTotal.textContent = '₱' + total.toFixed(2);
     }
@@ -297,7 +160,7 @@ function updateCartUI() {
 
 // Update Quantity
 function updateQuantity(productId, change) {
-    const item = cart.find(i => i.id === productId);
+    const item = cart.find(i => parseInt(i.id) === parseInt(productId));
     if (item) {
         item.quantity += change;
         if (item.quantity <= 0) {
@@ -311,7 +174,7 @@ function updateQuantity(productId, change) {
 
 // Remove from Cart
 function removeFromCart(productId) {
-    cart = cart.filter(item => item.id !== productId);
+    cart = cart.filter(item => parseInt(item.id) !== parseInt(productId));
     saveCart();
     updateCartUI();
 }
@@ -336,9 +199,9 @@ function sortProducts() {
     let sorted = [...products];
 
     if (sortValue === 'low-high') {
-        sorted.sort((a, b) => a.price - b.price);
+        sorted.sort((a, b) => parseFloat(a.price) - parseFloat(b.price));
     } else if (sortValue === 'high-low') {
-        sorted.sort((a, b) => b.price - a.price);
+        sorted.sort((a, b) => parseFloat(b.price) - parseFloat(a.price));
     }
 
     displayProducts(sorted);
