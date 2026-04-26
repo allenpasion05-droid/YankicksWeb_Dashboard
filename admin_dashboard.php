@@ -16,14 +16,19 @@ $repeat_result = $conn->query("SELECT COUNT(user_id) as total_customers, SUM(CAS
 $repeat_data = $repeat_result->fetch_assoc();
 $repeat_rate = ($repeat_data['total_customers'] > 0) ? ($repeat_data['repeat_customers'] / $repeat_data['total_customers']) * 100 : 0;
 
+// Completion Rate
+$completed_count = $conn->query("SELECT COUNT(*) as c FROM orders WHERE status='completed'")->fetch_assoc()['c'] ?? 0;
+$total_count = $conn->query("SELECT COUNT(*) as c FROM orders")->fetch_assoc()['c'] ?? 0;
+$completion_rate = ($total_count > 0) ? ($completed_count / $total_count) * 100 : 0;
 
 // --- 2. REVENUE OVER TIME (Chart 1) ---
-$revenue_months = [];
+$revenue_labels = [];
 $revenue_totals = [];
-$sql_revenue = "SELECT DATE_FORMAT(created_at, '%b') as month, SUM(total_amount) as total FROM orders WHERE status != 'cancelled' GROUP BY YEAR(created_at), MONTH(created_at) ORDER BY YEAR(created_at), MONTH(created_at)";
+// Groups orders by the start of the week (Monday)
+$sql_revenue = "SELECT DATE_FORMAT(DATE_ADD(created_at, INTERVAL -WEEKDAY(created_at) DAY), '%b %e') as week_start, SUM(total_amount) as total FROM orders WHERE status != 'cancelled' GROUP BY YEARWEEK(created_at, 1) ORDER BY YEARWEEK(created_at, 1)";
 $result_rev = $conn->query($sql_revenue);
 while($row = $result_rev->fetch_assoc()) {
-    $revenue_months[] = $row['month'];
+    $revenue_labels[] = 'Week of ' . $row['week_start'];
     $revenue_totals[] = $row['total'];
 }
 
@@ -113,19 +118,28 @@ for ($i = 5; $i >= 0; $i--) {
     $sales_data[$month_name] = $res->fetch_assoc()['total'] ?? 0;
 }
 
-// Category Distribution
-$category_data = [];
-$res = $conn->query("SELECT category, COUNT(*) as count FROM products GROUP BY category");
-while($row = $res->fetch_assoc()) {
-    $category_data[$row['category']] = $row['count'];
+// Order Status Distribution (For Chart 4)
+$status_names = [];
+$status_counts = [];
+$res_status = $conn->query("SELECT status, COUNT(*) as count FROM orders GROUP BY status");
+while($row = $res_status->fetch_assoc()) {
+    $status_names[] = ucfirst($row['status']); // Capitalizes the first letter
+    $status_counts[] = $row['count'];
 }
 
-// Order Status Distribution
-$status_data = [];
-$res = $conn->query("SELECT status, COUNT(*) as count FROM orders GROUP BY status");
-while($row = $res->fetch_assoc()) {
-    $status_data[$row['status']] = $row['count'];
+// Payment Methods (For Chart 3)
+$payment_names = [];
+$payment_counts = [];
+$res_pay = $conn->query("SELECT payment_method, COUNT(*) as count FROM orders GROUP BY payment_method");
+while($row = $res_pay->fetch_assoc()) {
+    $payment_names[] = $row['payment_method'];
+    $payment_counts[] = $row['count'];
 }
+
+// Variables for Prescriptive Cards
+$top_product = !empty($product_names) ? $product_names[0] : 'Top Products';
+$top_category = !empty($category_names) ? $category_names[0] : 'Popular Category';
+$urgent_restock = !empty($low_stock_products) ? $low_stock_products[0]['name'] : 'Inventory';
 ?>
 
 <!DOCTYPE html>
@@ -465,8 +479,9 @@ while($row = $res->fetch_assoc()) {
                 <h3 class="text-3xl font-black">₱<?php echo number_format($total_revenue, 2); ?></h3>
             </div>
             <div class="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm">
-                <p class="text-[11px] text-gray-500 font-bold uppercase tracking-wider mb-2">Conversion Rate</p>
-                <h3 class="text-3xl font-black">--%</h3> </div>
+                <p class="text-[11px] text-gray-500 font-bold uppercase tracking-wider mb-2">Completion Rate</p>
+                <h3 class="text-3xl font-black"><?php echo number_format($completion_rate, 1); ?>%</h3>
+            </div>
             <div class="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm">
                 <p class="text-[11px] text-gray-500 font-bold uppercase tracking-wider mb-2">Avg Order Value</p>
                 <h3 class="text-3xl font-black">₱<?php echo number_format($avg_order_value, 2); ?></h3>
@@ -501,13 +516,13 @@ while($row = $res->fetch_assoc()) {
 
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
             <div class="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm min-w-0 flex flex-col">
-                <h4 class="text-sm font-bold uppercase tracking-wider mb-4">Cart Abandonment Funnel</h4>
+                <h4 class="text-sm font-bold uppercase tracking-wider mb-4">Orders by Payment Method</h4>
                 <div class="relative w-full flex-1 min-h-[250px] md:min-h-[300px]">
                     <canvas id="funnelChart"></canvas>
                 </div>
             </div>
             <div class="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm min-w-0 flex flex-col">
-                <h4 class="text-sm font-bold uppercase tracking-wider mb-4">Refund Reasons</h4>
+                <h4 class="text-sm font-bold uppercase tracking-wider mb-4">Order Status Distribution</h4>
                 <div class="relative w-full flex-1 min-h-[250px] md:min-h-[300px]">
                     <canvas id="refundChart"></canvas>
                 </div>
@@ -523,7 +538,7 @@ while($row = $res->fetch_assoc()) {
 
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-4">
             <div class="lg:col-span-2 bg-white p-6 rounded-2xl border border-gray-100 shadow-sm min-w-0 flex flex-col">
-                <h4 class="text-sm font-bold uppercase tracking-wider mb-4">3-Month Revenue Forecast</h4>
+                <h4 class="text-sm font-bold uppercase tracking-wider mb-4">3-Week Revenue Forecast</h4>
                 <div class="relative w-full flex-1 min-h-[250px] md:min-h-[300px]">
                     <canvas id="forecastChart"></canvas>
                 </div>
@@ -544,27 +559,27 @@ while($row = $res->fetch_assoc()) {
         </div>
     </div>
 
-    <div class="mb-10">
+   <div class="mb-10">
         <h2 class="text-xl font-black mb-1 flex items-center gap-2">
             <span class="bg-black text-white px-2.5 py-0.5 rounded text-sm">4</span> PRESCRIPTIVE
         </h2>
-        <p class="text-gray-500 text-sm mb-6">What should we do? Actionable recommendations.</p>
+        <p class="text-gray-500 text-sm mb-6">What should we do? Actionable recommendations based on real data.</p>
 
         <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
             <div class="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm flex flex-col justify-between">
                 <div>
                     <span class="text-[10px] font-bold bg-black text-white px-2 py-1 rounded uppercase tracking-wider w-max inline-block">High Priority</span>
-                    <p class="font-bold text-sm mt-4 mb-2">Restock Trail Blazer X within 7 days</p>
+                    <p class="font-bold text-sm mt-4 mb-2">Restock <?php echo $urgent_restock; ?> immediately</p>
                 </div>
-                <p class="text-green-500 font-bold text-sm mt-4">+₱45,000 est. revenue</p>
+                <p class="text-red-500 font-bold text-sm mt-4">Critical Inventory Level</p>
             </div>
             
             <div class="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm flex flex-col justify-between">
                 <div>
                     <span class="text-[10px] font-bold bg-gray-100 text-gray-600 px-2 py-1 rounded uppercase tracking-wider w-max inline-block">Medium Priority</span>
-                    <p class="font-bold text-sm mt-4 mb-2">Launch promo for Urban Style</p>
+                    <p class="font-bold text-sm mt-4 mb-2">Launch promo for <?php echo $top_category; ?> shoes</p>
                 </div>
-                <p class="text-green-500 font-bold text-sm mt-4">Predicted 23% lift</p>
+                <p class="text-green-500 font-bold text-sm mt-4">Highest Converting Category</p>
             </div>
 
             <div class="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm flex flex-col justify-between">
@@ -572,15 +587,15 @@ while($row = $res->fetch_assoc()) {
                     <span class="text-[10px] font-bold bg-gray-100 text-gray-600 px-2 py-1 rounded uppercase tracking-wider w-max inline-block">Medium Priority</span>
                     <p class="font-bold text-sm mt-4 mb-2">Target lapsed customers with 15% discount</p>
                 </div>
-                <p class="text-green-500 font-bold text-sm mt-4">+₱25,000 est. revenue</p>
+                <p class="text-green-500 font-bold text-sm mt-4">Boost Repeat Customer Rate</p>
             </div>
 
             <div class="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm flex flex-col justify-between">
                 <div>
                     <span class="text-[10px] font-bold bg-black text-white px-2 py-1 rounded uppercase tracking-wider w-max inline-block">High Priority</span>
-                    <p class="font-bold text-sm mt-4 mb-2">Increase ad spend on Basketball category</p>
+                    <p class="font-bold text-sm mt-4 mb-2">Increase ad spend on <?php echo $top_product; ?></p>
                 </div>
-                <p class="text-green-500 font-bold text-sm mt-4">Highest ROAS</p>
+                <p class="text-green-500 font-bold text-sm mt-4">Current Top Seller</p>
             </div>
         </div>
     </div>
@@ -595,11 +610,11 @@ while($row = $res->fetch_assoc()) {
         new Chart(document.getElementById('revenueOverTimeChart'), {
             type: 'line',
             data: {
-                labels: <?php echo json_encode($revenue_months); ?>,
+                // Change variable to match new weekly PHP array
+                labels: <?php echo json_encode($revenue_labels); ?>,
                 datasets: [{
                     label: 'Revenue',
                     data: <?php echo json_encode($revenue_totals); ?>,
-
                     borderColor: '#000',
                     backgroundColor: 'rgba(0, 0, 0, 0.05)',
                     fill: true,
@@ -652,14 +667,14 @@ while($row = $res->fetch_assoc()) {
             }
         });
 
-        // 3. Cart Abandonment Funnel
+       // 3. Orders by Payment Method
         new Chart(document.getElementById('funnelChart'), {
             type: 'bar',
             data: {
-                labels: ['Viewed Product', 'Added to Cart', 'Initiated Checkout', 'Completed Purchase'],
+                labels: <?php echo json_encode($payment_names); ?>,
                 datasets: [{
-                    data: [10000, 3500, 1200, 300],
-                    backgroundColor: ['#9CA3AF', '#9CA3AF', '#9CA3AF', '#000'],
+                    data: <?php echo json_encode($payment_counts); ?>,
+                    backgroundColor: ['#111827', '#374151', '#6B7280', '#9CA3AF'],
                     borderRadius: 4,
                     barThickness: 'flex',
                     maxBarThickness: 40
@@ -670,55 +685,55 @@ while($row = $res->fetch_assoc()) {
                 maintainAspectRatio: false,
                 plugins: { legend: { display: false } },
                 scales: {
-                    x: { 
-                        grid: { display: false },
-                        ticks: { 
-                            maxRotation: 45, // Angles text on small screens so it doesn't overlap
-                            minRotation: 0
-                        }
-                    },
+                    x: { grid: { display: false } },
                     y: { 
                         grid: gridConfig,
-                        ticks: { stepSize: 2500 }
+                        ticks: { stepSize: 1 } // Ensures payment counts show as whole numbers
                     }
                 }
             }
         });
 
-        // 4. Refund Reasons
+       // 4. Order Status Distribution
+        const statusLabels = <?php echo json_encode($status_names); ?>;
+        const statusData = <?php echo json_encode($status_counts); ?>;
+        
+        // Updated Color Scheme: Minimalist Grays and Blacks to match the dashboard
+        const colorMapping = {
+            'Completed': '#111827', // Almost Black (gray-900)
+            'Shipped': '#4B5563',   // Dark Gray (gray-600)
+            'Pending': '#9CA3AF',   // Medium Gray (gray-400)
+            'Cancelled': '#E5E7EB'  // Light Gray (gray-200)
+        };
+        const bgColors = statusLabels.map(label => colorMapping[label] || '#9CA3AF');
+
         new Chart(document.getElementById('refundChart'), {
-            type: 'bar',
+            type: 'doughnut',
             data: {
-                labels: ['Wrong Size', 'Defective', 'Changed Mind', 'Not as Expected'],
+                labels: statusLabels,
                 datasets: [{
-                    data: [125, 45, 85, 65],
-                    backgroundColor: '#4B5563',
-                    borderRadius: 4,
-                    barThickness: 'flex',
-                    maxBarThickness: 24
+                    data: statusData,
+                    backgroundColor: bgColors,
+                    borderWidth: 0 // Removes the white borders for a cleaner look
                 }]
             },
             options: {
-                indexAxis: 'y',
                 responsive: true,
                 maintainAspectRatio: false,
-                plugins: { legend: { display: false } },
-                scales: {
-                    x: { grid: gridConfig, ticks: { stepSize: 30 } },
-                    y: { 
-                        grid: { display: false },
-                        ticks: { autoSkip: false }
-                    }
+                plugins: { 
+                    legend: { 
+                        display: true,
+                        position: 'right',
+                        labels: { usePointStyle: true, boxWidth: 10 }
+                    } 
                 }
             }
         });
+       // 5. 3-Week Revenue Forecast (Dynamic Trend)
+        const rawLabels = <?php echo json_encode($revenue_labels); ?>;
+        const actualTotals = <?php echo json_encode($revenue_totals); ?>.map(Number);
 
-        // 5. 3-Month Revenue Forecast (Dynamic Trend)
-        // Grab actual data from the PHP queries at the top of your file
-        const rawMonths = <?php echo json_encode($revenue_months); ?>;
-        const actualTotals = <?php echo json_encode($revenue_totals); ?>.map(Number); // Convert to numbers
-
-        // Step 1: Calculate the historical average growth trajectory
+        // Step 1: Calculate the historical average weekly growth trajectory
         let lastValue = actualTotals.length > 0 ? actualTotals[actualTotals.length - 1] : 0;
         let avgGrowth = 0;
         
@@ -731,23 +746,16 @@ while($row = $res->fetch_assoc()) {
         }
 
         // Step 2: Prepare the timeline arrays
-        const allMonths = [...rawMonths];
-        const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
-        let lastMonthIndex = rawMonths.length > 0 ? monthNames.indexOf(rawMonths[rawMonths.length - 1]) : new Date().getMonth();
-
-        // Fill the forecast array with "null" for the past months so it doesn't draw a line there
+        const allLabels = [...rawLabels];
         let forecastData = Array(Math.max(0, actualTotals.length - 1)).fill(null);
-        
-        // Push the final actual value so the dashed line connects perfectly to the solid line
         forecastData.push(lastValue); 
 
-        // Step 3: Generate the next 3 months of predictions
+        // Step 3: Generate the next 3 weeks of predictions
         let currentForecastVal = lastValue;
         for (let i = 1; i <= 3; i++) {
-            let nextIndex = lastMonthIndex !== -1 ? (lastMonthIndex + i) % 12 : (new Date().getMonth() + i) % 12;
-            allMonths.push(monthNames[nextIndex] + " (Est)");
+            allLabels.push("Week +" + i + " (Est)");
             
-            // Add the average growth to the next month (Math.max prevents it from guessing negative revenue)
+            // Add the average growth to the next week
             currentForecastVal = Math.max(0, currentForecastVal + avgGrowth); 
             forecastData.push(currentForecastVal);
         }
@@ -756,7 +764,7 @@ while($row = $res->fetch_assoc()) {
         new Chart(document.getElementById('forecastChart'), {
             type: 'line',
             data: {
-                labels: allMonths,
+                labels: allLabels,
                 datasets: [
                     {
                         label: 'Actual Revenue',
@@ -772,8 +780,8 @@ while($row = $res->fetch_assoc()) {
                     {
                         label: 'Forecasted Trend',
                         data: forecastData,
-                        borderColor: '#9CA3AF', // Gray to indicate it's a prediction
-                        borderDash: [6, 6],     // Dashed line style
+                        borderColor: '#9CA3AF',
+                        borderDash: [6, 6],
                         fill: false,
                         tension: 0.4,
                         borderWidth: 2,
@@ -788,11 +796,7 @@ while($row = $res->fetch_assoc()) {
                 responsive: true,
                 maintainAspectRatio: false,
                 plugins: { 
-                    legend: { 
-                        display: true, // Turn the legend back on so they know what each line means
-                        position: 'top',
-                        labels: { boxWidth: 12, usePointStyle: true }
-                    } 
+                    legend: { display: true, position: 'top', labels: { boxWidth: 12, usePointStyle: true } } 
                 },
                 scales: {
                     x: { grid: { display: false } },
