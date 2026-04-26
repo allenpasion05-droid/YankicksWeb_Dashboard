@@ -122,6 +122,11 @@ while($row = $res->fetch_assoc()) {
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" /></svg>
                         Manage Orders
                     </a>
+                    <a href="?view=analytics" class="flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-semibold transition-all <?php echo $view == 'analytics' ? 'bg-black text-white shadow-lg' : 'text-gray-500 hover:bg-gray-100'; ?>">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 3v18m4-14v14m4-10v10M7 13v8M3 17v4" /></svg>
+                        Analytics
+                    </a>
+
                 </nav>
             </div>
             
@@ -398,8 +403,156 @@ while($row = $res->fetch_assoc()) {
                         </tbody>
                     </table>
                 </div>
+
+           <?php elseif ($view == 'analytics'): ?>
+                <div class="mb-12">
+                    <h1 class="text-4xl font-black uppercase tracking-tighter">Analytics Dashboard</h1>
+                    <p class="text-gray-500 mt-2">DDPP - Descriptive, Diagnostic, Predictive, and Prescriptive Analytics</p>
+                </div>
+
+                <!-- DESCRIPTIVE ANALYTICS -->
+                <div class="bg-white p-8 rounded-3xl border border-gray-100 shadow-sm mb-8">
+                    <h2 class="text-2xl font-black mb-2">Descriptive Analytics</h2>
+                    <p class="text-gray-500 mb-6">What happened in the business?</p>
+
+                    <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+                        <div class="bg-gray-50 p-6 rounded-2xl">
+                            <p class="text-sm text-gray-500 font-bold">Total Revenue</p>
+                            <h3 class="text-2xl font-black">₱<?php echo number_format($total_revenue, 2); ?></h3>
+                        </div>
+
+                        <div class="bg-gray-50 p-6 rounded-2xl">
+                            <p class="text-sm text-gray-500 font-bold">Total Orders</p>
+                            <h3 class="text-2xl font-black"><?php echo $total_orders; ?></h3>
+                        </div>
+
+                        <div class="bg-gray-50 p-6 rounded-2xl">
+                            <p class="text-sm text-gray-500 font-bold">Total Users</p>
+                            <h3 class="text-2xl font-black"><?php echo $total_users; ?></h3>
+                        </div>
+
+                        <div class="bg-gray-50 p-6 rounded-2xl">
+                            <p class="text-sm text-gray-500 font-bold">Total Products</p>
+                            <h3 class="text-2xl font-black"><?php echo $total_products; ?></h3>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- DIAGNOSTIC ANALYTICS -->
+                <div class="bg-white p-8 rounded-3xl border border-gray-100 shadow-sm mb-8">
+                    <h2 class="text-2xl font-black mb-2">Diagnostic Analytics</h2>
+                    <p class="text-gray-500 mb-6">Why did it happen?</p>
+
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                        <div>
+                            <h4 class="font-bold mb-4">Monthly Sales Performance</h4>
+                            <canvas id="salesChartAnalytics" height="200"></canvas>
+                        </div>
+
+                        <div>
+                            <h4 class="font-bold mb-4">Order Status Distribution</h4>
+                            <canvas id="statusChartAnalytics" height="200"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- PREDICTIVE ANALYTICS -->
+                <div class="bg-white p-8 rounded-3xl border border-gray-100 shadow-sm mb-8">
+                    <h2 class="text-2xl font-black mb-2">Predictive Analytics</h2>
+                    <p class="text-gray-500 mb-6">What is likely to happen next?</p>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="bg-gray-50 p-6 rounded-2xl">
+                            <p class="text-sm text-gray-500 font-bold">Expected Next Month Sales</p>
+                            <h3 class="text-2xl font-black">
+                                ₱<?php echo number_format(array_sum($sales_data)/count($sales_data), 2); ?>
+                            </h3>
+                            <p class="text-sm text-gray-400 mt-2">Based on average of previous months</p>
+                        </div>
+
+                        <div class="bg-gray-50 p-6 rounded-2xl">
+                            <p class="text-sm text-gray-500 font-bold">Most Likely Future Status</p>
+                            <h3 class="text-2xl font-black">
+                                <?php
+                                    arsort($status_data);
+                                    echo array_key_first($status_data);
+                                ?>
+                            </h3>
+                            <p class="text-sm text-gray-400 mt-2">Most frequent order pattern</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- PRESCRIPTIVE ANALYTICS -->
+                <div class="bg-white p-8 rounded-3xl border border-gray-100 shadow-sm">
+                    <h2 class="text-2xl font-black mb-2">Prescriptive Analytics</h2>
+                    <p class="text-gray-500 mb-6">What should we do next?</p>
+
+                    <div class="space-y-4">
+                        <div class="bg-gray-50 p-6 rounded-2xl">
+                            <p class="font-bold">Recommendation 1</p>
+                            <p class="text-gray-600">
+                                Focus marketing efforts on the best-selling product categories and improve stock availability.
+                            </p>
+                        </div>
+
+                        <div class="bg-gray-50 p-6 rounded-2xl">
+                            <p class="font-bold">Recommendation 2</p>
+                            <p class="text-gray-600">
+                                Reduce cancelled orders by improving customer communication and delivery updates.
+                            </p>
+                        </div>
+
+                        <div class="bg-gray-50 p-6 rounded-2xl">
+                            <p class="font-bold">Recommendation 3</p>
+                            <p class="text-gray-600">
+                                Encourage repeat purchases through loyalty rewards and discount campaigns.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <script>
+                    // Sales Chart
+                    new Chart(document.getElementById('salesChartAnalytics'), {
+                        type: 'line',
+                        data: {
+                            labels: <?php echo json_encode(array_keys($sales_data)); ?>,
+                            datasets: [{
+                                label: 'Sales',
+                                data: <?php echo json_encode(array_values($sales_data)); ?>,
+                                borderColor: '#000',
+                                backgroundColor: 'rgba(0,0,0,0.05)',
+                                fill: true,
+                                tension: 0.4,
+                                borderWidth: 3
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            plugins: {
+                                legend: { display: false }
+                            }
+                        }
+                    });
+
+                    // Status Chart
+                    new Chart(document.getElementById('statusChartAnalytics'), {
+                        type: 'doughnut',
+                        data: {
+                            labels: <?php echo json_encode(array_keys($status_data)); ?>,
+                            datasets: [{
+                                data: <?php echo json_encode(array_values($status_data)); ?>,
+                                backgroundColor: ['#111827', '#374151', '#6B7280', '#D1D5DB']
+                            }]
+                        },
+                        options: {
+                            responsive: true
+                        }
+                    });
+                </script>
+
             <?php endif; ?>
-            
         </main>
     </div>
 </body>
