@@ -2,6 +2,53 @@
 session_start();
 include 'api/db_connect.php';
 
+// --- 1. KPI CALCULATIONS ---
+// Total Revenue
+$rev_result = $conn->query("SELECT SUM(total_amount) as total FROM orders WHERE status != 'cancelled'");
+$total_revenue = $rev_result->fetch_assoc()['total'] ?? 0;
+
+// Average Order Value
+$aov_result = $conn->query("SELECT AVG(total_amount) as aov FROM orders WHERE status != 'cancelled'");
+$avg_order_value = $aov_result->fetch_assoc()['aov'] ?? 0;
+
+// Repeat Customer Rate
+$repeat_result = $conn->query("SELECT COUNT(user_id) as total_customers, SUM(CASE WHEN order_count > 1 THEN 1 ELSE 0 END) as repeat_customers FROM (SELECT user_id, COUNT(*) as order_count FROM orders GROUP BY user_id) as user_orders");
+$repeat_data = $repeat_result->fetch_assoc();
+$repeat_rate = ($repeat_data['total_customers'] > 0) ? ($repeat_data['repeat_customers'] / $repeat_data['total_customers']) * 100 : 0;
+
+
+// --- 2. REVENUE OVER TIME (Chart 1) ---
+$revenue_months = [];
+$revenue_totals = [];
+$sql_revenue = "SELECT DATE_FORMAT(created_at, '%b') as month, SUM(total_amount) as total FROM orders WHERE status != 'cancelled' GROUP BY YEAR(created_at), MONTH(created_at) ORDER BY YEAR(created_at), MONTH(created_at)";
+$result_rev = $conn->query($sql_revenue);
+while($row = $result_rev->fetch_assoc()) {
+    $revenue_months[] = $row['month'];
+    $revenue_totals[] = $row['total'];
+}
+
+
+// --- 3. TOP SELLING PRODUCTS (Chart 2) ---
+$product_names = [];
+$product_sales = [];
+$sql_products = "SELECT product_name, SUM(quantity) as total_sold FROM order_items GROUP BY product_name ORDER BY total_sold DESC LIMIT 5";
+$result_prod = $conn->query($sql_products);
+while($row = $result_prod->fetch_assoc()) {
+    $product_names[] = $row['product_name'];
+    $product_sales[] = $row['total_sold'];
+}
+
+
+// --- 4. LOW STOCK ALERTS (Predictive Stock-outs) ---
+$low_stock_products = [];
+// Grabbing products with less than 20 stock, ordering by lowest first
+$sql_stock = "SELECT name, stock FROM products WHERE stock < 20 ORDER BY stock ASC LIMIT 3";
+$result_stock = $conn->query($sql_stock);
+while($row = $result_stock->fetch_assoc()) {
+    $low_stock_products[] = $row;
+}
+
+
 // SECURITY: Admin Only
 if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') { 
     header("Location: login-register.php"); 
@@ -167,66 +214,62 @@ while($row = $res->fetch_assoc()) {
                     </div>
                 </div>
 
-                <!-- Charts Grid -->
-                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                    <div class="bg-white p-8 rounded-3xl border border-gray-100 shadow-sm">
-                        <h4 class="text-lg font-bold mb-8">Sales Performance</h4>
-                        <canvas id="salesChart" height="200"></canvas>
+               <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                    
+                    <div class="lg:col-span-2 bg-white p-8 rounded-3xl border border-gray-100 shadow-sm">
+                        <div class="flex justify-between items-center mb-6">
+                            <h4 class="text-lg font-bold">Recent Orders</h4>
+                            <a href="?view=orders" class="text-sm font-bold text-blue-600 hover:underline">View All</a>
+                        </div>
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-left text-sm">
+                                <thead class="text-gray-500 border-b border-gray-100">
+                                    <tr>
+                                        <th class="pb-3 font-bold">Order ID</th>
+                                        <th class="pb-3 font-bold">Amount</th>
+                                        <th class="pb-3 font-bold">Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="divide-y divide-gray-50">
+                                    <?php
+                                    $recent_orders = $conn->query("SELECT id, total_amount, status FROM orders ORDER BY created_at DESC LIMIT 5");
+                                    while($ro = $recent_orders->fetch_assoc()):
+                                    ?>
+                                    <tr>
+                                        <td class="py-3 font-bold">#<?php echo $ro['id']; ?></td>
+                                        <td class="py-3">₱<?php echo number_format($ro['total_amount'], 2); ?></td>
+                                        <td class="py-3">
+                                            <span class="px-2 py-1 bg-gray-100 rounded text-xs font-bold uppercase"><?php echo $ro['status']; ?></span>
+                                        </td>
+                                    </tr>
+                                    <?php endwhile; ?>
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
-                    <div class="bg-white p-8 rounded-3xl border border-gray-100 shadow-sm">
-                        <h4 class="text-lg font-bold mb-8">Order Status Distribution</h4>
-                        <canvas id="statusChart" height="200"></canvas>
+
+                    <div class="bg-white p-8 rounded-3xl border border-gray-100 shadow-sm flex flex-col">
+                        <h4 class="text-lg font-bold mb-6">Action Required</h4>
+                        <div class="flex-1 space-y-4">
+                            <?php 
+                            $pending_count = $conn->query("SELECT COUNT(*) as c FROM orders WHERE status='pending'")->fetch_assoc()['c'];
+                            if($pending_count > 0): 
+                            ?>
+                            <div class="p-4 bg-yellow-50 text-yellow-800 rounded-xl border border-yellow-100">
+                                <p class="font-bold text-sm">🚚 <?php echo $pending_count; ?> Orders to Ship</p>
+                                <p class="text-xs mt-1">You have orders waiting to be processed.</p>
+                            </div>
+                            <?php endif; ?>
+
+                            <?php if(count($low_stock_products) > 0): ?>
+                            <div class="p-4 bg-red-50 text-red-800 rounded-xl border border-red-100">
+                                <p class="font-bold text-sm">⚠️ Low Inventory</p>
+                                <p class="text-xs mt-1"><?php echo count($low_stock_products); ?> products are running out of stock.</p>
+                            </div>
+                            <?php endif; ?>
+                        </div>
                     </div>
                 </div>
-
-                <script>
-                    // Sales Chart
-                    const salesCtx = document.getElementById('salesChart').getContext('2d');
-                    new Chart(salesCtx, {
-                        type: 'line',
-                        data: {
-                            labels: <?php echo json_encode(array_keys($sales_data)); ?>,
-                            datasets: [{
-                                label: 'Revenue (₱)',
-                                data: <?php echo json_encode(array_values($sales_data)); ?>,
-                                borderColor: '#000',
-                                backgroundColor: 'rgba(0,0,0,0.05)',
-                                fill: true,
-                                tension: 0.4,
-                                borderWidth: 3,
-                                pointBackgroundColor: '#000',
-                                pointRadius: 5
-                            }]
-                        },
-                        options: {
-                            responsive: true,
-                            plugins: { legend: { display: false } },
-                            scales: {
-                                y: { beginAtZero: true, grid: { display: false } },
-                                x: { grid: { display: false } }
-                            }
-                        }
-                    });
-
-                    // Status Chart
-                    const statusCtx = document.getElementById('statusChart').getContext('2d');
-                    new Chart(statusCtx, {
-                        type: 'doughnut',
-                        data: {
-                            labels: <?php echo json_encode(array_keys($status_data)); ?>,
-                            datasets: [{
-                                data: <?php echo json_encode(array_values($status_data)); ?>,
-                                backgroundColor: ['#000', '#4B5563', '#9CA3AF', '#E5E7EB'],
-                                borderWidth: 0
-                            }]
-                        },
-                        options: {
-                            responsive: true,
-                            cutout: '70%',
-                            plugins: { legend: { position: 'bottom' } }
-                        }
-                    });
-                </script>
 
             <?php elseif ($view == 'users'): ?>
                 <div class="flex justify-between items-end mb-12">
@@ -405,152 +448,363 @@ while($row = $res->fetch_assoc()) {
                 </div>
 
            <?php elseif ($view == 'analytics'): ?>
-                <div class="mb-12">
-                    <h1 class="text-4xl font-black uppercase tracking-tighter">Analytics Dashboard</h1>
-                    <p class="text-gray-500 mt-2">DDPP - Descriptive, Diagnostic, Predictive, and Prescriptive Analytics</p>
+    <div class="mb-8">
+        <h1 class="text-4xl font-black uppercase tracking-tighter">Analytics Dashboard</h1>
+        <p class="text-gray-500 mt-2">Comprehensive store performance and insights.</p>
+    </div>
+
+    <div class="mb-10">
+        <h2 class="text-xl font-black mb-1 flex items-center gap-2">
+            <span class="bg-black text-white px-2.5 py-0.5 rounded text-sm">1</span> DESCRIPTIVE
+        </h2>
+        <p class="text-gray-500 text-sm mb-6">What happened? Historical performance metrics.</p>
+
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
+            <div class="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm">
+                <p class="text-[11px] text-gray-500 font-bold uppercase tracking-wider mb-2">Total Revenue</p>
+                <h3 class="text-3xl font-black">₱<?php echo number_format($total_revenue, 2); ?></h3>
+            </div>
+            <div class="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm">
+                <p class="text-[11px] text-gray-500 font-bold uppercase tracking-wider mb-2">Conversion Rate</p>
+                <h3 class="text-3xl font-black">--%</h3> </div>
+            <div class="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm">
+                <p class="text-[11px] text-gray-500 font-bold uppercase tracking-wider mb-2">Avg Order Value</p>
+                <h3 class="text-3xl font-black">₱<?php echo number_format($avg_order_value, 2); ?></h3>
+            </div>
+            <div class="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm">
+                <p class="text-[11px] text-gray-500 font-bold uppercase tracking-wider mb-2">Repeat Customer</p>
+                <h3 class="text-3xl font-black"><?php echo number_format($repeat_rate, 1); ?>%</h3>
+            </div>
+        </div>
+
+       <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+            <div class="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm min-w-0 flex flex-col">
+                <h4 class="text-sm font-bold uppercase tracking-wider mb-4">Revenue Over Time</h4>
+                <div class="relative w-full flex-1 min-h-[250px] md:min-h-[300px]">
+                    <canvas id="revenueOverTimeChart"></canvas>
                 </div>
+            </div>
+            <div class="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm min-w-0 flex flex-col">
+                <h4 class="text-sm font-bold uppercase tracking-wider mb-4">Top Selling Products</h4>
+                <div class="relative w-full flex-1 min-h-[250px] md:min-h-[300px]">
+                    <canvas id="topSellingChart"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
 
-                <!-- DESCRIPTIVE ANALYTICS -->
-                <div class="bg-white p-8 rounded-3xl border border-gray-100 shadow-sm mb-8">
-                    <h2 class="text-2xl font-black mb-2">Descriptive Analytics</h2>
-                    <p class="text-gray-500 mb-6">What happened in the business?</p>
+    <div class="mb-10">
+        <h2 class="text-xl font-black mb-1 flex items-center gap-2">
+            <span class="bg-black text-white px-2.5 py-0.5 rounded text-sm">2</span> DIAGNOSTIC
+        </h2>
+        <p class="text-gray-500 text-sm mb-6">Why did it happen? Drill-down into behaviors.</p>
 
-                    <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
-                        <div class="bg-gray-50 p-6 rounded-2xl">
-                            <p class="text-sm text-gray-500 font-bold">Total Revenue</p>
-                            <h3 class="text-2xl font-black">₱<?php echo number_format($total_revenue, 2); ?></h3>
-                        </div>
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+            <div class="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm min-w-0 flex flex-col">
+                <h4 class="text-sm font-bold uppercase tracking-wider mb-4">Cart Abandonment Funnel</h4>
+                <div class="relative w-full flex-1 min-h-[250px] md:min-h-[300px]">
+                    <canvas id="funnelChart"></canvas>
+                </div>
+            </div>
+            <div class="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm min-w-0 flex flex-col">
+                <h4 class="text-sm font-bold uppercase tracking-wider mb-4">Refund Reasons</h4>
+                <div class="relative w-full flex-1 min-h-[250px] md:min-h-[300px]">
+                    <canvas id="refundChart"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
 
-                        <div class="bg-gray-50 p-6 rounded-2xl">
-                            <p class="text-sm text-gray-500 font-bold">Total Orders</p>
-                            <h3 class="text-2xl font-black"><?php echo $total_orders; ?></h3>
-                        </div>
+    <div class="mb-10">
+        <h2 class="text-xl font-black mb-1 flex items-center gap-2">
+            <span class="bg-black text-white px-2.5 py-0.5 rounded text-sm">3</span> PREDICTIVE
+        </h2>
+        <p class="text-gray-500 text-sm mb-6">What will happen? Forecasts and trends.</p>
 
-                        <div class="bg-gray-50 p-6 rounded-2xl">
-                            <p class="text-sm text-gray-500 font-bold">Total Users</p>
-                            <h3 class="text-2xl font-black"><?php echo $total_users; ?></h3>
-                        </div>
-
-                        <div class="bg-gray-50 p-6 rounded-2xl">
-                            <p class="text-sm text-gray-500 font-bold">Total Products</p>
-                            <h3 class="text-2xl font-black"><?php echo $total_products; ?></h3>
-                        </div>
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-4">
+            <div class="lg:col-span-2 bg-white p-6 rounded-2xl border border-gray-100 shadow-sm min-w-0 flex flex-col">
+                <h4 class="text-sm font-bold uppercase tracking-wider mb-4">3-Month Revenue Forecast</h4>
+                <div class="relative w-full flex-1 min-h-[250px] md:min-h-[300px]">
+                    <canvas id="forecastChart"></canvas>
+                </div>
+            </div>
+            <div class="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm flex flex-col">
+                <h4 class="text-sm font-bold uppercase tracking-wider mb-6">Expected Stock-Outs (Low Stock)</h4>
+                <div class="flex-1 space-y-6 mt-4">
+                    <?php foreach($low_stock_products as $item): ?>
+                    <div class="flex justify-between items-center border-b border-gray-50 pb-4">
+                        <span class="font-bold text-sm"><?php echo $item['name']; ?></span>
+                        <span class="text-xs font-bold text-red-600 bg-red-50 px-2 py-1 rounded">
+                            ONLY <?php echo $item['stock']; ?> LEFT
+                        </span>
                     </div>
+                    <?php endforeach; ?>
                 </div>
+            </div>
+        </div>
+    </div>
 
-                <!-- DIAGNOSTIC ANALYTICS -->
-                <div class="bg-white p-8 rounded-3xl border border-gray-100 shadow-sm mb-8">
-                    <h2 class="text-2xl font-black mb-2">Diagnostic Analytics</h2>
-                    <p class="text-gray-500 mb-6">Why did it happen?</p>
+    <div class="mb-10">
+        <h2 class="text-xl font-black mb-1 flex items-center gap-2">
+            <span class="bg-black text-white px-2.5 py-0.5 rounded text-sm">4</span> PRESCRIPTIVE
+        </h2>
+        <p class="text-gray-500 text-sm mb-6">What should we do? Actionable recommendations.</p>
 
-                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                        <div>
-                            <h4 class="font-bold mb-4">Monthly Sales Performance</h4>
-                            <canvas id="salesChartAnalytics" height="200"></canvas>
-                        </div>
-
-                        <div>
-                            <h4 class="font-bold mb-4">Order Status Distribution</h4>
-                            <canvas id="statusChartAnalytics" height="200"></canvas>
-                        </div>
-                    </div>
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
+            <div class="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm flex flex-col justify-between">
+                <div>
+                    <span class="text-[10px] font-bold bg-black text-white px-2 py-1 rounded uppercase tracking-wider w-max inline-block">High Priority</span>
+                    <p class="font-bold text-sm mt-4 mb-2">Restock Trail Blazer X within 7 days</p>
                 </div>
-
-                <!-- PREDICTIVE ANALYTICS -->
-                <div class="bg-white p-8 rounded-3xl border border-gray-100 shadow-sm mb-8">
-                    <h2 class="text-2xl font-black mb-2">Predictive Analytics</h2>
-                    <p class="text-gray-500 mb-6">What is likely to happen next?</p>
-
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <div class="bg-gray-50 p-6 rounded-2xl">
-                            <p class="text-sm text-gray-500 font-bold">Expected Next Month Sales</p>
-                            <h3 class="text-2xl font-black">
-                                ₱<?php echo number_format(array_sum($sales_data)/count($sales_data), 2); ?>
-                            </h3>
-                            <p class="text-sm text-gray-400 mt-2">Based on average of previous months</p>
-                        </div>
-
-                        <div class="bg-gray-50 p-6 rounded-2xl">
-                            <p class="text-sm text-gray-500 font-bold">Most Likely Future Status</p>
-                            <h3 class="text-2xl font-black">
-                                <?php
-                                    arsort($status_data);
-                                    echo array_key_first($status_data);
-                                ?>
-                            </h3>
-                            <p class="text-sm text-gray-400 mt-2">Most frequent order pattern</p>
-                        </div>
-                    </div>
+                <p class="text-green-500 font-bold text-sm mt-4">+₱45,000 est. revenue</p>
+            </div>
+            
+            <div class="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm flex flex-col justify-between">
+                <div>
+                    <span class="text-[10px] font-bold bg-gray-100 text-gray-600 px-2 py-1 rounded uppercase tracking-wider w-max inline-block">Medium Priority</span>
+                    <p class="font-bold text-sm mt-4 mb-2">Launch promo for Urban Style</p>
                 </div>
+                <p class="text-green-500 font-bold text-sm mt-4">Predicted 23% lift</p>
+            </div>
 
-                <!-- PRESCRIPTIVE ANALYTICS -->
-                <div class="bg-white p-8 rounded-3xl border border-gray-100 shadow-sm">
-                    <h2 class="text-2xl font-black mb-2">Prescriptive Analytics</h2>
-                    <p class="text-gray-500 mb-6">What should we do next?</p>
-
-                    <div class="space-y-4">
-                        <div class="bg-gray-50 p-6 rounded-2xl">
-                            <p class="font-bold">Recommendation 1</p>
-                            <p class="text-gray-600">
-                                Focus marketing efforts on the best-selling product categories and improve stock availability.
-                            </p>
-                        </div>
-
-                        <div class="bg-gray-50 p-6 rounded-2xl">
-                            <p class="font-bold">Recommendation 2</p>
-                            <p class="text-gray-600">
-                                Reduce cancelled orders by improving customer communication and delivery updates.
-                            </p>
-                        </div>
-
-                        <div class="bg-gray-50 p-6 rounded-2xl">
-                            <p class="font-bold">Recommendation 3</p>
-                            <p class="text-gray-600">
-                                Encourage repeat purchases through loyalty rewards and discount campaigns.
-                            </p>
-                        </div>
-                    </div>
+            <div class="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm flex flex-col justify-between">
+                <div>
+                    <span class="text-[10px] font-bold bg-gray-100 text-gray-600 px-2 py-1 rounded uppercase tracking-wider w-max inline-block">Medium Priority</span>
+                    <p class="font-bold text-sm mt-4 mb-2">Target lapsed customers with 15% discount</p>
                 </div>
+                <p class="text-green-500 font-bold text-sm mt-4">+₱25,000 est. revenue</p>
+            </div>
 
-                <script>
-                    // Sales Chart
-                    new Chart(document.getElementById('salesChartAnalytics'), {
-                        type: 'line',
-                        data: {
-                            labels: <?php echo json_encode(array_keys($sales_data)); ?>,
-                            datasets: [{
-                                label: 'Sales',
-                                data: <?php echo json_encode(array_values($sales_data)); ?>,
-                                borderColor: '#000',
-                                backgroundColor: 'rgba(0,0,0,0.05)',
-                                fill: true,
-                                tension: 0.4,
-                                borderWidth: 3
-                            }]
-                        },
-                        options: {
-                            responsive: true,
-                            plugins: {
-                                legend: { display: false }
-                            }
+            <div class="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm flex flex-col justify-between">
+                <div>
+                    <span class="text-[10px] font-bold bg-black text-white px-2 py-1 rounded uppercase tracking-wider w-max inline-block">High Priority</span>
+                    <p class="font-bold text-sm mt-4 mb-2">Increase ad spend on Basketball category</p>
+                </div>
+                <p class="text-green-500 font-bold text-sm mt-4">Highest ROAS</p>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        Chart.defaults.font.family = "'Inter', 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif";
+        Chart.defaults.color = '#9CA3AF';
+        const gridConfig = { color: '#F3F4F6', drawBorder: false };
+
+        // 1. Revenue Over Time
+        new Chart(document.getElementById('revenueOverTimeChart'), {
+            type: 'line',
+            data: {
+                labels: <?php echo json_encode($revenue_months); ?>,
+                datasets: [{
+                    label: 'Revenue',
+                    data: <?php echo json_encode($revenue_totals); ?>,
+
+                    borderColor: '#000',
+                    backgroundColor: 'rgba(0, 0, 0, 0.05)',
+                    fill: true,
+                    tension: 0.4,
+                    borderWidth: 2,
+                    pointRadius: 0,
+                    pointHoverRadius: 6
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: { legend: { display: false } },
+                scales: {
+                    x: { grid: { display: false } },
+                    y: { 
+                        grid: gridConfig,
+                        min: 0,
+                        ticks: { callback: value => '₱' + (value/1000) + 'k' } 
+                    }
+                }
+            }
+        });
+
+        // 2. Top Selling Products
+        new Chart(document.getElementById('topSellingChart'), {
+            type: 'bar',
+            data: {
+                labels: <?php echo json_encode($product_names); ?>,
+                datasets: [{
+                    data: <?php echo json_encode($product_sales); ?>,
+                    backgroundColor: '#000',
+                    borderRadius: 4,
+                    barThickness: 'flex', // Automatically adjusts thickness based on screen size
+                    maxBarThickness: 24
+                }]
+            },
+            options: {
+                indexAxis: 'y',
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: { legend: { display: false } },
+                scales: {
+                    x: { grid: gridConfig },
+                    y: { 
+                        grid: { display: false },
+                        ticks: { autoSkip: false } // Prevents labels from disappearing on small screens
+                    }
+                }
+            }
+        });
+
+        // 3. Cart Abandonment Funnel
+        new Chart(document.getElementById('funnelChart'), {
+            type: 'bar',
+            data: {
+                labels: ['Viewed Product', 'Added to Cart', 'Initiated Checkout', 'Completed Purchase'],
+                datasets: [{
+                    data: [10000, 3500, 1200, 300],
+                    backgroundColor: ['#9CA3AF', '#9CA3AF', '#9CA3AF', '#000'],
+                    borderRadius: 4,
+                    barThickness: 'flex',
+                    maxBarThickness: 40
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: { legend: { display: false } },
+                scales: {
+                    x: { 
+                        grid: { display: false },
+                        ticks: { 
+                            maxRotation: 45, // Angles text on small screens so it doesn't overlap
+                            minRotation: 0
                         }
-                    });
+                    },
+                    y: { 
+                        grid: gridConfig,
+                        ticks: { stepSize: 2500 }
+                    }
+                }
+            }
+        });
 
-                    // Status Chart
-                    new Chart(document.getElementById('statusChartAnalytics'), {
-                        type: 'doughnut',
-                        data: {
-                            labels: <?php echo json_encode(array_keys($status_data)); ?>,
-                            datasets: [{
-                                data: <?php echo json_encode(array_values($status_data)); ?>,
-                                backgroundColor: ['#111827', '#374151', '#6B7280', '#D1D5DB']
-                            }]
-                        },
-                        options: {
-                            responsive: true
-                        }
-                    });
-                </script>
+        // 4. Refund Reasons
+        new Chart(document.getElementById('refundChart'), {
+            type: 'bar',
+            data: {
+                labels: ['Wrong Size', 'Defective', 'Changed Mind', 'Not as Expected'],
+                datasets: [{
+                    data: [125, 45, 85, 65],
+                    backgroundColor: '#4B5563',
+                    borderRadius: 4,
+                    barThickness: 'flex',
+                    maxBarThickness: 24
+                }]
+            },
+            options: {
+                indexAxis: 'y',
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: { legend: { display: false } },
+                scales: {
+                    x: { grid: gridConfig, ticks: { stepSize: 30 } },
+                    y: { 
+                        grid: { display: false },
+                        ticks: { autoSkip: false }
+                    }
+                }
+            }
+        });
+
+        // 5. 3-Month Revenue Forecast (Dynamic Trend)
+        // Grab actual data from the PHP queries at the top of your file
+        const rawMonths = <?php echo json_encode($revenue_months); ?>;
+        const actualTotals = <?php echo json_encode($revenue_totals); ?>.map(Number); // Convert to numbers
+
+        // Step 1: Calculate the historical average growth trajectory
+        let lastValue = actualTotals.length > 0 ? actualTotals[actualTotals.length - 1] : 0;
+        let avgGrowth = 0;
+        
+        if (actualTotals.length > 1) {
+            let totalDiff = 0;
+            for (let i = 1; i < actualTotals.length; i++) {
+                totalDiff += (actualTotals[i] - actualTotals[i-1]);
+            }
+            avgGrowth = totalDiff / (actualTotals.length - 1);
+        }
+
+        // Step 2: Prepare the timeline arrays
+        const allMonths = [...rawMonths];
+        const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+        let lastMonthIndex = rawMonths.length > 0 ? monthNames.indexOf(rawMonths[rawMonths.length - 1]) : new Date().getMonth();
+
+        // Fill the forecast array with "null" for the past months so it doesn't draw a line there
+        let forecastData = Array(Math.max(0, actualTotals.length - 1)).fill(null);
+        
+        // Push the final actual value so the dashed line connects perfectly to the solid line
+        forecastData.push(lastValue); 
+
+        // Step 3: Generate the next 3 months of predictions
+        let currentForecastVal = lastValue;
+        for (let i = 1; i <= 3; i++) {
+            let nextIndex = lastMonthIndex !== -1 ? (lastMonthIndex + i) % 12 : (new Date().getMonth() + i) % 12;
+            allMonths.push(monthNames[nextIndex] + " (Est)");
+            
+            // Add the average growth to the next month (Math.max prevents it from guessing negative revenue)
+            currentForecastVal = Math.max(0, currentForecastVal + avgGrowth); 
+            forecastData.push(currentForecastVal);
+        }
+
+        // Step 4: Draw the Dual-Line Chart
+        new Chart(document.getElementById('forecastChart'), {
+            type: 'line',
+            data: {
+                labels: allMonths,
+                datasets: [
+                    {
+                        label: 'Actual Revenue',
+                        data: actualTotals,
+                        borderColor: '#000',
+                        backgroundColor: 'rgba(0, 0, 0, 0.05)',
+                        fill: true,
+                        tension: 0.4,
+                        borderWidth: 2,
+                        pointRadius: 4,
+                        pointBackgroundColor: '#000'
+                    },
+                    {
+                        label: 'Forecasted Trend',
+                        data: forecastData,
+                        borderColor: '#9CA3AF', // Gray to indicate it's a prediction
+                        borderDash: [6, 6],     // Dashed line style
+                        fill: false,
+                        tension: 0.4,
+                        borderWidth: 2,
+                        pointBackgroundColor: '#fff',
+                        pointBorderColor: '#9CA3AF',
+                        pointRadius: 4,
+                        pointBorderWidth: 2
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: { 
+                    legend: { 
+                        display: true, // Turn the legend back on so they know what each line means
+                        position: 'top',
+                        labels: { boxWidth: 12, usePointStyle: true }
+                    } 
+                },
+                scales: {
+                    x: { grid: { display: false } },
+                    y: { 
+                        grid: gridConfig,
+                        min: 0,
+                        ticks: { callback: value => '₱' + (value/1000) + 'k' } 
+                    }
+                }
+            }
+        });
+    </script>
 
             <?php endif; ?>
         </main>
