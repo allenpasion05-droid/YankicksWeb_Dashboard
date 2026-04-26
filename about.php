@@ -47,7 +47,7 @@
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-20 items-center">
                 <div class="relative order-2 lg:order-1">
                     <div class="aspect-square rounded-full bg-black/5 absolute -top-10 -left-10 w-full h-full -z-10"></div>
-                    <img src="assets/images/sprintforce_shop.jpg" alt="Our Story" class="w-full rounded-3xl shadow-2xl transform rotate-3 hover:rotate-0 transition-transform duration-500">
+                    <img src="assets/images/our_story_yankicks.png" alt="Our Story" class="w-full rounded-3xl shadow-2xl transform rotate-3 hover:rotate-0 transition-transform duration-500">
                 </div>
                 <div class="space-y-10 order-1 lg:order-2">
                     <h2 class="text-5xl font-black uppercase tracking-tighter leading-tight">Our Story</h2>

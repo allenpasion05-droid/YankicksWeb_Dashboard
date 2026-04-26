@@ -38,7 +38,7 @@
             <div class="grid grid-cols-1 md:grid-cols-3 gap-10">
                 <div class="group cursor-pointer">
                     <div class="relative aspect-[4/5] overflow-hidden rounded-3xl bg-gray-100">
-                        <img src="assets/images/running_shoes.jpeg" alt="Running" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+                        <img src="assets/images/running1.jpg" alt="Running" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
                         <div class="absolute inset-0 bg-black/20 group-hover:bg-black/40 transition-all"></div>
                         <div class="absolute bottom-10 left-10 text-white">
                             <h3 class="text-3xl font-bold uppercase">Running</h3>
@@ -48,7 +48,7 @@
                 </div>
                 <div class="group cursor-pointer">
                     <div class="relative aspect-[4/5] overflow-hidden rounded-3xl bg-gray-100">
-                        <img src="assets/images/hoopsmasterpro.jpg" alt="Basketball" onerror="this.src='assets/images/yankicks_logo.jpg'" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+                        <img src="assets/images/basketball4.jpg" alt="Basketball" onerror="this.src='assets/images/yankicks_logo.jpg'" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
                         <div class="absolute inset-0 bg-black/20 group-hover:bg-black/40 transition-all"></div>
                         <div class="absolute bottom-10 left-10 text-white">
                             <h3 class="text-3xl font-bold uppercase">Basketball</h3>
@@ -58,7 +58,7 @@
                 </div>
                 <div class="group cursor-pointer">
                     <div class="relative aspect-[4/5] overflow-hidden rounded-3xl bg-gray-100">
-                        <img src="assets/images/lifestyle_shoes.jpg" alt="Lifestyle" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+                        <img src="assets/images/lifestyle2.jpg" alt="Lifestyle" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
                         <div class="absolute inset-0 bg-black/20 group-hover:bg-black/40 transition-all"></div>
                         <div class="absolute bottom-10 left-10 text-white">
                             <h3 class="text-3xl font-bold uppercase">Lifestyle</h3>
