@@ -1,156 +1,115 @@
-<?php
-session_start();
-// Check if user is logged in to determine where the account icon leads
-$account_link = isset($_SESSION['user_id']) ? 'account.php' : 'login-register.php';
-?>
+<?php include 'header.php'; ?>
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>About Us - YanKicks</title>
-    <link rel="stylesheet" href="styles.css">
-</head>
-<body>
-    <nav class="navbar">
-        <div class="nav-container">
-            <div class="nav-logo">
-                <img src="assets/images/yankicks_logo.jpg" alt="YanKicks Logo">
-                <span>YanKicks</span>
-            </div>
-            <ul class="nav-links">
-                <li><a href="index.php">Home</a></li>
-                <li><a href="shop.php">Shop</a></li>
-                <li><a href="about.php" class="active">About Us</a></li>
-                <li><a href="customer-service.php">Customer Service</a></li>
-                <li><a href="blog.php">Blog</a></li>
-                <li><a href="contact.php">Contact Us</a></li>
-                <li><a href="legal.php">Legal</a></li>
-            </ul>
-            <div class="nav-cart">
-                <a href="<?php echo $account_link; ?>" class="account-btn" title="My Account">
-                    <svg class="account-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
-                        <circle cx="12" cy="7" r="4"></circle>
-                    </svg>
-                </a>
-                <button class="cart-btn" id="cartBtn" title="Shopping Cart">
-                    <svg class="cart-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <circle cx="9" cy="21" r="1"></circle>
-                        <circle cx="20" cy="21" r="1"></circle>
-                        <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
-                    </svg>
-                    <span class="cart-count" id="cartCount">0</span>
-                </button>
+<main>
+    <!-- About Hero -->
+    <section class="relative h-[70vh] flex items-center overflow-hidden bg-black">
+        <div class="absolute inset-0 z-0">
+            <div class="absolute inset-0 bg-gradient-to-r from-black via-black/60 to-transparent z-10"></div>
+            <img src="assets/images/yankicks_logo.jpg" alt="About YanKicks" class="w-full h-full object-cover object-center opacity-50 scale-110 animate-pulse-slow">
+        </div>
+        
+        <div class="relative z-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
+            <div class="max-w-3xl space-y-8">
+                <h1 class="text-6xl md:text-8xl font-black text-white uppercase tracking-tighter leading-none">
+                    About <br> <span class="text-transparent bg-clip-text bg-gradient-to-r from-white to-gray-500">YanKicks</span>
+                </h1>
+                <p class="text-xl text-gray-300 font-medium max-w-lg">
+                    Redefining Excellence in Athletic Footwear Since 2023. Experience Premium Quality Designed for Champions.
+                </p>
             </div>
         </div>
-    </nav>
+    </section>
 
-    <aside class="cart-sidebar" id="cartSidebar">
-        <div class="cart-header">
-            <h2>Your Cart</h2>
-            <button class="close-cart" id="closeCart">&times;</button>
-        </div>
-        <div class="cart-items" id="cartItems"></div>
-        <div class="cart-footer">
-            <div class="cart-total">
-                <strong>Total:</strong>
-                <span id="cartTotal">₱0.00</span>
-            </div>
-            <button class="checkout-btn">Proceed to Checkout</button>
-        </div>
-    </aside>
-
-    <main class="about-page">
-        <section class="about-hero">
-            <div class="container">
-                <h1>About YanKicks</h1>
-                <p>Redefining Excellence Since 2023</p>
-            </div>
-        </section>
-
-        <section class="about-content">
-            <div class="container">
-                <div class="about-section">
-                    <h2>Our Mission</h2>
-                    <p>At YanKicks, we believe that great footwear is the foundation of every athlete's success. We're dedicated to creating premium athletic shoes that combine cutting-edge technology, innovative design, and sustainable practices.</p>
+    <!-- Mission Section -->
+    <section class="py-32 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-20 items-center">
+                <div class="space-y-10">
+                    <h2 class="text-5xl font-black uppercase tracking-tighter leading-tight">Our Mission</h2>
+                    <p class="text-gray-600 text-lg leading-relaxed">
+                        At YanKicks, we believe that great footwear is the foundation of every athlete's success. We're dedicated to creating premium athletic shoes that combine cutting-edge technology, innovative design, and sustainable practices.
+                    </p>
+                    <p class="text-gray-600 text-lg leading-relaxed">
+                        Our commitment to excellence drives every decision we make, from material selection to manufacturing processes, ensuring that every pair delivers unmatched performance and comfort.
+                    </p>
                 </div>
-
-                <div class="about-section">
-                    <h2>Our Story</h2>
-                    <p>What started as a vision to revolutionize athletic footwear has grown into a global brand trusted by athletes and enthusiasts worldwide. Our commitment to excellence drives every decision we make, from material selection to manufacturing processes.</p>
+                <div class="relative">
+                    <div class="aspect-square rounded-full bg-black/5 absolute -top-10 -right-10 w-full h-full -z-10"></div>
+                    <img src="assets/images/running_shoes.jpeg" alt="Our Mission" class="w-full rounded-3xl shadow-2xl transform -rotate-3 hover:rotate-0 transition-transform duration-500">
                 </div>
+            </div>
+        </div>
+    </section>
 
-                <div class="about-section">
-                    <h2>Our Values</h2>
-                    <div class="values-list">
-                        <div class="value">
-                            <h3>Innovation</h3>
-                            <p>We continuously push the boundaries of shoe design and technology.</p>
-                        </div>
-                        <div class="value">
-                            <h3>Quality</h3>
-                            <p>Every pair is crafted with meticulous attention to detail and durability.</p>
-                        </div>
-                        <div class="value">
-                            <h3>Sustainability</h3>
-                            <p>We're committed to minimizing our environmental impact.</p>
-                        </div>
-                        <div class="value">
-                            <h3>Community</h3>
-                            <p>We support athletes and enthusiasts in achieving their goals.</p>
-                        </div>
+    <!-- Story Section -->
+    <section class="py-32 bg-gray-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-20 items-center">
+                <div class="relative order-2 lg:order-1">
+                    <div class="aspect-square rounded-full bg-black/5 absolute -top-10 -left-10 w-full h-full -z-10"></div>
+                    <img src="assets/images/sprintforce_shop.jpg" alt="Our Story" class="w-full rounded-3xl shadow-2xl transform rotate-3 hover:rotate-0 transition-transform duration-500">
+                </div>
+                <div class="space-y-10 order-1 lg:order-2">
+                    <h2 class="text-5xl font-black uppercase tracking-tighter leading-tight">Our Story</h2>
+                    <p class="text-gray-600 text-lg leading-relaxed">
+                        What started as a vision to revolutionize athletic footwear has grown into a global brand trusted by athletes and enthusiasts worldwide. Our journey began with a simple belief: that the right pair of shoes can transform any performance.
+                    </p>
+                    <p class="text-gray-600 text-lg leading-relaxed">
+                        Today, YanKicks stands as a testament to innovation, quality, and passion for athletic excellence. Every shoe we create carries this legacy forward.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Values Section -->
+    <section class="py-32 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-20">
+                <h2 class="text-5xl font-black uppercase tracking-tighter mb-6">Our Values</h2>
+                <p class="text-gray-500 text-lg max-w-2xl mx-auto">The principles that guide everything we do, from design to delivery.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
+                <div class="text-center space-y-6">
+                    <div class="w-20 h-20 bg-black text-white rounded-3xl flex items-center justify-center mx-auto">
+                        <svg class="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
+                        </svg>
                     </div>
+                    <h3 class="text-2xl font-bold">Innovation</h3>
+                    <p class="text-gray-600">We continuously push the boundaries of shoe design and technology to deliver cutting-edge performance.</p>
                 </div>
-            </div>
-        </section>
-    </main>
-
-    <footer class="footer">
-        <div class="container">
-            <div class="footer-content">
-                <div class="footer-section">
-                    <h4>About Us</h4>
-                    <ul>
-                        <li><a href="our-story.php">Our Story</a></li>
-                        <li><a href="mission-vision.php">Mission/Vision</a></li>
-                        <li><a href="why-choose-us.php">Why Choose Us</a></li>
-                        <li><a href="store-locations.php">Store Locations</a></li>
-                    </ul>
-                </div>
-                <div class="footer-section">
-                    <h4>Customer Service</h4>
-                    <ul>
-                        <li><a href="shipping-delivery.php">Shipping & Delivery Info</a></li>
-                        <li><a href="returns-exchange.php">Returns & Exchange Policy</a></li>
-                        <li><a href="faqs.php">FAQs</a></li>
-                        <li><a href="payment-options.php">Payment Options</a></li>
-                        <li><a href="size-guide.php">Size Guide</a></li>
-                    </ul>
-                </div>
-                <div class="footer-section">
-                    <h4>Legal</h4>
-                    <ul>
-                        <li><a href="privacy-policy.php">Privacy Policy</a></li>
-                        <li><a href="terms-conditions.php">Terms & Conditions</a></li>
-                    </ul>
-                </div>
-                <div class="footer-section">
-                    <h4>Follow Us</h4>
-                    <div class="social-links">
-                        <a href="social-media.php">Facebook</a>
-                        <a href="social-media.php">Instagram</a>
-                        <a href="social-media.php">Twitter</a>
+                <div class="text-center space-y-6">
+                    <div class="w-20 h-20 bg-black text-white rounded-3xl flex items-center justify-center mx-auto">
+                        <svg class="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                        </svg>
                     </div>
+                    <h3 class="text-2xl font-bold">Quality</h3>
+                    <p class="text-gray-600">Every pair is crafted with meticulous attention to detail and built to last through the toughest challenges.</p>
                 </div>
-            </div>
-            <div class="footer-bottom">
-                <p>&copy; 2023 YanKicks. All rights reserved.</p>
+                <div class="text-center space-y-6">
+                    <div class="w-20 h-20 bg-black text-white rounded-3xl flex items-center justify-center mx-auto">
+                        <svg class="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9" />
+                        </svg>
+                    </div>
+                    <h3 class="text-2xl font-bold">Sustainability</h3>
+                    <p class="text-gray-600">We're committed to minimizing our environmental impact through ethical production and eco-friendly materials.</p>
+                </div>
+                <div class="text-center space-y-6">
+                    <div class="w-20 h-20 bg-black text-white rounded-3xl flex items-center justify-center mx-auto">
+                        <svg class="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+                        </svg>
+                    </div>
+                    <h3 class="text-2xl font-bold">Community</h3>
+                    <p class="text-gray-600">We support athletes and enthusiasts worldwide in achieving their goals and celebrating their victories.</p>
+                </div>
             </div>
         </div>
-    </footer>
+    </section>
+</main>
 
-    <script src="script.js"></script>
-</body>
-</html>
+<?php include 'footer.php'; ?>

@@ -1,197 +1,127 @@
-<?php
-session_start();
-$account_link = isset($_SESSION['user_id']) ? 'account.php' : 'login-register.php';
-?>
+<?php include 'header.php'; ?>
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Shop - YanKicks</title>
-    <link rel="stylesheet" href="styles.css">
-</head>
-<body>
-    <nav class="navbar">
-        <div class="nav-container">
-            <div class="nav-logo">
-                <img src="assets/images/yankicks_logo.jpg" alt="YanKicks Logo">
-                <span>YanKicks</span>
-            </div>
-            <ul class="nav-links">
-                <li><a href="index.php">Home</a></li>
-                <li><a href="shop.php" class="active">Shop</a></li>
-                <li><a href="about.php">About Us</a></li>
-                <li><a href="customer-service.php">Customer Service</a></li>
-                <li><a href="blog.php">Blog</a></li>
-                <li><a href="contact.php">Contact Us</a></li>
-                <li><a href="legal.php">Legal</a></li>
-            </ul>
-            <div class="nav-cart">
-                <a href="<?php echo $account_link; ?>" class="account-btn" title="My Account">
-                    <svg class="account-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
-                        <circle cx="12" cy="7" r="4"></circle>
-                    </svg>
-                </a>
-                <button class="cart-btn" id="cartBtn" title="Shopping Cart">
-                    <svg class="cart-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <circle cx="9" cy="21" r="1"></circle>
-                        <circle cx="20" cy="21" r="1"></circle>
-                        <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
-                    </svg>
-                    <span class="cart-count" id="cartCount">0</span>
-                </button>
-            </div>
+<main class="py-20 bg-gray-50 min-h-screen">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <!-- Shop Header -->
+        <div class="mb-16 text-center">
+            <h1 class="text-6xl font-black uppercase tracking-tighter mb-4">All Products</h1>
+            <p class="text-gray-500 text-lg max-w-2xl mx-auto">Discover our complete collection of premium athletic footwear. Engineered for speed, built for performance.</p>
         </div>
-    </nav>
 
-    <aside class="cart-sidebar" id="cartSidebar">
-        <div class="cart-header">
-            <h2>Your Cart</h2>
-            <button class="close-cart" id="closeCart">&times;</button>
-        </div>
-        <div class="cart-items" id="cartItems"></div>
-        <div class="cart-footer">
-            <div class="cart-total">
-                <strong>Total:</strong>
-                <span id="cartTotal">₱0.00</span>
-            </div>
-            <button class="checkout-btn" onclick="window.location.href='checkout.php'">Proceed to Checkout</button>
-        </div>
-    </aside>
-
-    <main class="shop-page">
-        <div class="container">
-            <div class="shop-header">
-                <h1>All Products</h1>
-                <p>Discover our complete collection of premium athletic footwear</p>
-            </div>
-
-            <div class="filters-section">
-                <div class="filter-group">
-                    <label for="categoryFilter">Category:</label>
-                    <select id="categoryFilter">
+        <!-- Filters Section -->
+        <div class="flex flex-col md:flex-row justify-between items-center gap-8 mb-16 bg-white p-8 rounded-3xl border border-gray-100 shadow-sm">
+            <div class="flex flex-wrap gap-6 items-center">
+                <div class="space-y-1">
+                    <label class="text-[10px] font-bold uppercase tracking-widest text-gray-400 ml-1">Category</label>
+                    <select id="categoryFilter" class="block w-48 bg-gray-50 border-none rounded-xl px-4 py-3 text-sm font-bold focus:ring-2 focus:ring-black transition-all">
                         <option value="all">All Categories</option>
                         <option value="Running">Running</option>
                         <option value="Basketball">Basketball</option>
                         <option value="Lifestyle">Lifestyle</option>
                     </select>
                 </div>
-                <div class="filter-group">
-                    <label for="priceFilter">Sort by Price:</label>
-                    <select id="priceFilter">
-                        <option value="default">Default</option>
-                        <option value="low-high">Low to High</option>
-                        <option value="high-low">High to Low</option>
+                <div class="space-y-1">
+                    <label class="text-[10px] font-bold uppercase tracking-widest text-gray-400 ml-1">Sort By</label>
+                    <select id="priceFilter" class="block w-48 bg-gray-50 border-none rounded-xl px-4 py-3 text-sm font-bold focus:ring-2 focus:ring-black transition-all">
+                        <option value="default">Newest First</option>
+                        <option value="low-high">Price: Low to High</option>
+                        <option value="high-low">Price: High to Low</option>
                     </select>
                 </div>
             </div>
-
-            <div class="products-grid" id="productsGrid">
-                <p style="text-align:center; width:100%;">Loading products...</p>
+            <div class="text-sm font-bold text-gray-400">
+                Showing <span id="productCount" class="text-black">0</span> products
             </div>
         </div>
-    </main>
 
-    <footer class="footer">
-        <div class="container">
-            <div class="footer-content">
-                <div class="footer-section">
-                    <h4>About Us</h4>
-                    <ul>
-                        <li><a href="our-story.php">Our Story</a></li>
-                        <li><a href="mission-vision.php">Mission/Vision</a></li>
-                        <li><a href="why-choose-us.php">Why Choose Us</a></li>
-                        <li><a href="store-locations.php">Store Locations</a></li>
-                    </ul>
-                </div>
-                <div class="footer-section">
-                    <h4>Customer Service</h4>
-                    <ul>
-                        <li><a href="shipping-delivery.php">Shipping & Delivery Info</a></li>
-                        <li><a href="returns-exchange.php">Returns & Exchange Policy</a></li>
-                        <li><a href="faqs.php">FAQs</a></li>
-                        <li><a href="payment-options.php">Payment Options</a></li>
-                        <li><a href="size-guide.php">Size Guide</a></li>
-                    </ul>
-                </div>
-                <div class="footer-section">
-                    <h4>Legal</h4>
-                    <ul>
-                        <li><a href="privacy-policy.php">Privacy Policy</a></li>
-                        <li><a href="terms-conditions.php">Terms & Conditions</a></li>
-                    </ul>
-                </div>
-                <div class="footer-section">
-                    <h4>Follow Us</h4>
-                    <div class="social-links">
-                        <a href="social-media.php">Facebook</a>
-                        <a href="social-media.php">Instagram</a>
-                        <a href="social-media.php">Twitter</a>
+        <!-- Products Grid -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-10" id="productsGrid">
+            <!-- Loading State -->
+            <div class="col-span-full py-20 text-center">
+                <div class="inline-block animate-spin rounded-full h-8 w-8 border-4 border-black border-t-transparent mb-4"></div>
+                <p class="text-gray-500 font-bold">Loading premium kicks...</p>
+            </div>
+        </div>
+    </div>
+</main>
+
+<?php include 'footer.php'; ?>
+
+<script>
+    let allProducts = [];
+
+    document.addEventListener('DOMContentLoaded', () => {
+        const grid = document.getElementById('productsGrid');
+        const categorySelect = document.getElementById('categoryFilter');
+        const priceSelect = document.getElementById('priceFilter');
+        const countDisplay = document.getElementById('productCount');
+
+        // Fetch Products
+        fetch('api/products.php')
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(data => {
+                allProducts = data;
+                applyFilters();
+            })
+            .catch(err => {
+                console.error('Error loading products:', err);
+                grid.innerHTML = '<div class="col-span-full py-20 text-center text-red-500 font-bold">Unable to load products. Please check your connection and try again later.</div>';
+                countDisplay.textContent = '0';
+            });
+
+        categorySelect.addEventListener('change', applyFilters);
+        priceSelect.addEventListener('change', applyFilters);
+
+        function applyFilters() {
+            let result = [...allProducts];
+
+            const category = categorySelect.value;
+            if (category !== 'all') {
+                result = result.filter(p => p.category.toLowerCase() === category.toLowerCase());
+            }
+
+            const sortType = priceSelect.value;
+            if (sortType === 'low-high') {
+                result.sort((a, b) => parseFloat(a.price) - parseFloat(b.price));
+            } else if (sortType === 'high-low') {
+                result.sort((a, b) => parseFloat(b.price) - parseFloat(a.price));
+            }
+
+            countDisplay.textContent = result.length;
+            displayProducts(result);
+        }
+
+        function displayProducts(products) {
+            if (products.length === 0) {
+                grid.innerHTML = '<div class="col-span-full py-20 text-center text-gray-500 font-bold">No products match your selection.</div>';
+                return;
+            }
+
+            grid.innerHTML = products.map(p => `
+                <div class="group bg-white rounded-[2.5rem] p-6 border border-gray-100 shadow-sm hover:shadow-2xl hover:-translate-y-2 transition-all duration-500">
+                    <div class="relative aspect-square rounded-[2rem] overflow-hidden bg-gray-50 mb-8">
+                        <img src="assets/images/${p.image.replace('uploads/', '')}" alt="${p.name}" onerror="this.src='assets/images/yankicks_logo.jpg'" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+                        <div class="absolute top-4 left-4 bg-white/90 backdrop-blur px-4 py-1.5 rounded-full text-[10px] font-black uppercase tracking-widest shadow-sm">
+                            ${p.category}
+                        </div>
+                        <button onclick="addToCart(${p.id})" class="absolute bottom-4 right-4 bg-black text-white p-4 rounded-2xl opacity-0 translate-y-4 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300 shadow-xl">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" /></svg>
+                        </button>
+                    </div>
+                    <div class="px-2">
+                        <h3 class="text-xl font-bold mb-2 group-hover:text-gray-600 transition-colors">${p.name}</h3>
+                        <div class="flex justify-between items-center">
+                            <span class="text-2xl font-black">₱${parseFloat(p.price).toLocaleString(undefined, {minimumFractionDigits: 2})}</span>
+                            <span class="text-[10px] font-bold text-gray-400 uppercase tracking-widest">In Stock</span>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="footer-bottom">
-                <p>&copy; 2023 YanKicks. All rights reserved.</p>
-            </div>
-        </div>
-    </footer>
-
-    <script src="script.js"></script>
-    
-    <script>
-        let allProducts = []; // Master list
-
-        document.addEventListener('DOMContentLoaded', () => {
-            const grid = document.getElementById('productsGrid');
-            const categorySelect = document.getElementById('categoryFilter');
-            const priceSelect = document.getElementById('priceFilter');
-
-            // 1. Fetch Data
-            fetch('api/products.php')
-                .then(response => response.json())
-                .then(data => {
-                    allProducts = data;
-                    applyFilters(); // Initial render
-                })
-                .catch(err => {
-                    console.error('Error:', err);
-                    grid.innerHTML = '<p>Error loading products.</p>';
-                });
-
-            // 2. Event Listeners
-            categorySelect.addEventListener('change', applyFilters);
-            priceSelect.addEventListener('change', applyFilters);
-
-            // 3. Unified Filter Logic
-            function applyFilters() {
-                let result = [...allProducts]; // Copy original array
-
-                // A. Filter by Category
-                const category = categorySelect.value;
-                if (category !== 'all') {
-                    // Normalize comparison (DB might be 'Running', value might be 'running')
-                    result = result.filter(p => p.category.toLowerCase() === category.toLowerCase());
-                }
-
-                // B. Sort by Price
-                const sortType = priceSelect.value;
-                if (sortType === 'low-high') {
-                    result.sort((a, b) => parseFloat(a.price) - parseFloat(b.price));
-                } else if (sortType === 'high-low') {
-                    result.sort((a, b) => parseFloat(b.price) - parseFloat(a.price));
-                }
-                // Default order (usually ID) is preserved if 'default' is selected
-
-                // C. Display
-                if (result.length > 0) {
-                    displayProducts(result);
-                } else {
-                    grid.innerHTML = '<p>No products match your selection.</p>';
-                }
-            }
-        });
-    </script>
-</body>
-</html>
+            `).join('');
+        }
+    });
+</script>

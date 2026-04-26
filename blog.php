@@ -1,138 +1,76 @@
-<?php
-session_start();
-$account_link = isset($_SESSION['user_id']) ? 'account.php' : 'login-register.php';
-?>
+<?php include 'header.php'; ?>
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Blog - YanKicks</title>
-    <link rel="stylesheet" href="styles.css">
-</head>
-<body>
-    <nav class="navbar">
-        <div class="nav-container">
-            <div class="nav-logo">
-                <img src="assets/images/yankicks_logo.jpg" alt="YanKicks Logo">
-                <span>YanKicks</span>
-            </div>
-            <ul class="nav-links">
-                <li><a href="index.php">Home</a></li>
-                <li><a href="shop.php">Shop</a></li>
-                <li><a href="about.php">About Us</a></li>
-                <li><a href="customer-service.php">Customer Service</a></li>
-                <li><a href="blog.php" class="active">Blog</a></li>
-                <li><a href="contact.php">Contact Us</a></li>
-                <li><a href="legal.php">Legal</a></li>
-            </ul>
-            <div class="nav-cart">
-                <a href="<?php echo $account_link; ?>" class="account-btn" title="My Account">
-                    <svg class="account-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
-                        <circle cx="12" cy="7" r="4"></circle>
-                    </svg>
-                </a>
-                <button class="cart-btn" id="cartBtn" title="Shopping Cart">
-                    <svg class="cart-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <circle cx="9" cy="21" r="1"></circle>
-                        <circle cx="20" cy="21" r="1"></circle>
-                        <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
-                    </svg>
-                    <span class="cart-count" id="cartCount">0</span>
-                </button>
+<main>
+    <!-- Blog Hero -->
+    <section class="relative h-[60vh] flex items-center overflow-hidden bg-black">
+        <div class="absolute inset-0 z-0">
+            <div class="absolute inset-0 bg-gradient-to-r from-black via-black/60 to-transparent z-10"></div>
+            <img src="assets/images/basketball_shoes.jpg" alt="YanKicks Blog" class="w-full h-full object-cover object-center opacity-50 scale-110 animate-pulse-slow">
+        </div>
+        
+        <div class="relative z-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
+            <div class="max-w-3xl space-y-8">
+                <h1 class="text-6xl md:text-8xl font-black text-white uppercase tracking-tighter leading-none">
+                    YanKicks <br> <span class="text-transparent bg-clip-text bg-gradient-to-r from-white to-gray-500">Blog</span>
+                </h1>
+                <p class="text-xl text-gray-300 font-medium max-w-lg">
+                    Stay updated with the latest trends, guides, and reviews in athletic footwear.
+                </p>
             </div>
         </div>
-    </nav>
+    </section>
 
-    <aside class="cart-sidebar" id="cartSidebar">
-        <div class="cart-header">
-            <h2>Your Cart</h2>
-            <button class="close-cart" id="closeCart">&times;</button>
-        </div>
-        <div class="cart-items" id="cartItems"></div>
-        <div class="cart-footer">
-            <div class="cart-total">
-                <strong>Total:</strong>
-                <span id="cartTotal">₱0.00</span>
-            </div>
-            <button class="checkout-btn">Proceed to Checkout</button>
-        </div>
-    </aside>
-
-    <main class="blog-page">
-        <div class="container">
-            <div class="page-header">
-                <h1>YanKicks Blog</h1>
-                <p>Stay updated with the latest trends, guides, and reviews</p>
+    <!-- Blog Categories -->
+    <section class="py-32 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-20">
+                <h2 class="text-5xl font-black uppercase tracking-tighter mb-6">Explore Our Content</h2>
+                <p class="text-gray-500 text-lg max-w-2xl mx-auto">Discover insights, trends, and expert advice from the world of athletic footwear.</p>
             </div>
 
-            <div class="blog-categories">
-                <a href="sneaker-trends.php" class="blog-category-card">
-                    <h3>Sneaker Trends</h3>
-                    <p>Discover the latest trends in sneaker culture</p>
-                </a>
-                <a href="shoe-guide.php" class="blog-category-card">
-                    <h3>Shoe Guide</h3>
-                    <p>Comprehensive guides to choosing the right shoes</p>
-                </a>
-                <a href="shoe-reviews.php" class="blog-category-card">
-                    <h3>Shoe Reviews</h3>
-                    <p>In-depth reviews of our premium footwear</p>
-                </a>
-                <a href="featured-brands.php" class="blog-category-card">
-                    <h3>Featured Brands</h3>
-                    <p>Learn about our featured brands and partnerships</p>
-                </a>
-            </div>
-        </div>
-    </main>
-
-    <footer class="footer">
-        <div class="container">
-            <div class="footer-content">
-                <div class="footer-section">
-                    <h4>About Us</h4>
-                    <ul>
-                        <li><a href="our-story.php">Our Story</a></li>
-                        <li><a href="mission-vision.php">Mission/Vision</a></li>
-                        <li><a href="why-choose-us.php">Why Choose Us</a></li>
-                        <li><a href="store-locations.php">Store Locations</a></li>
-                    </ul>
-                </div>
-                <div class="footer-section">
-                    <h4>Customer Service</h4>
-                    <ul>
-                        <li><a href="shipping-delivery.php">Shipping & Delivery Info</a></li>
-                        <li><a href="returns-exchange.php">Returns & Exchange Policy</a></li>
-                        <li><a href="faqs.php">FAQs</a></li>
-                        <li><a href="payment-options.php">Payment Options</a></li>
-                        <li><a href="size-guide.php">Size Guide</a></li>
-                    </ul>
-                </div>
-                <div class="footer-section">
-                    <h4>Legal</h4>
-                    <ul>
-                        <li><a href="privacy-policy.php">Privacy Policy</a></li>
-                        <li><a href="terms-conditions.php">Terms & Conditions</a></li>
-                    </ul>
-                </div>
-                <div class="footer-section">
-                    <h4>Follow Us</h4>
-                    <div class="social-links">
-                        <a href="social-media.php">Facebook</a>
-                        <a href="social-media.php">Instagram</a>
-                        <a href="social-media.php">Twitter</a>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                <a href="sneaker-trends.php" class="group bg-gray-50 rounded-3xl p-8 hover:bg-black hover:text-white transition-all duration-500 transform hover:-translate-y-2">
+                    <div class="w-16 h-16 bg-black text-white rounded-2xl flex items-center justify-center mb-6 group-hover:bg-white group-hover:text-black transition-all">
+                        <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+                        </svg>
                     </div>
-                </div>
-            </div>
-            <div class="footer-bottom">
-                <p>&copy; 2023 YanKicks. All rights reserved.</p>
+                    <h3 class="text-2xl font-bold mb-4">Sneaker Trends</h3>
+                    <p class="text-gray-600 group-hover:text-gray-300 transition-colors">Discover the latest trends in sneaker culture and streetwear fashion.</p>
+                </a>
+
+                <a href="shoe-guide.php" class="group bg-gray-50 rounded-3xl p-8 hover:bg-black hover:text-white transition-all duration-500 transform hover:-translate-y-2">
+                    <div class="w-16 h-16 bg-black text-white rounded-2xl flex items-center justify-center mb-6 group-hover:bg-white group-hover:text-black transition-all">
+                        <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                        </svg>
+                    </div>
+                    <h3 class="text-2xl font-bold mb-4">Shoe Guide</h3>
+                    <p class="text-gray-600 group-hover:text-gray-300 transition-colors">Comprehensive guides to choosing the right shoes for your needs.</p>
+                </a>
+
+                <a href="shoe-reviews.php" class="group bg-gray-50 rounded-3xl p-8 hover:bg-black hover:text-white transition-all duration-500 transform hover:-translate-y-2">
+                    <div class="w-16 h-16 bg-black text-white rounded-2xl flex items-center justify-center mb-6 group-hover:bg-white group-hover:text-black transition-all">
+                        <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" />
+                        </svg>
+                    </div>
+                    <h3 class="text-2xl font-bold mb-4">Shoe Reviews</h3>
+                    <p class="text-gray-600 group-hover:text-gray-300 transition-colors">In-depth reviews of our premium footwear collection.</p>
+                </a>
+
+                <a href="featured-brands.php" class="group bg-gray-50 rounded-3xl p-8 hover:bg-black hover:text-white transition-all duration-500 transform hover:-translate-y-2">
+                    <div class="w-16 h-16 bg-black text-white rounded-2xl flex items-center justify-center mb-6 group-hover:bg-white group-hover:text-black transition-all">
+                        <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+                        </svg>
+                    </div>
+                    <h3 class="text-2xl font-bold mb-4">Featured Brands</h3>
+                    <p class="text-gray-600 group-hover:text-gray-300 transition-colors">Learn about our featured brands and partnerships.</p>
+                </a>
             </div>
         </div>
-    </footer>
+    </section>
+</main>
 
-    <script src="script.js"></script>
-</body>
-</html>
+<?php include 'footer.php'; ?>

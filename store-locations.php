@@ -1,134 +1,116 @@
-<?php
-session_start();
-$account_link = isset($_SESSION['user_id']) ? 'account.php' : 'login-register.php';
-?>
+<?php include 'header.php'; ?>
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Store Locations - YanKicks</title>
-    <link rel="stylesheet" href="styles.css">
-</head>
-<body>
-    <nav class="navbar">
-        <div class="nav-container">
-            <div class="nav-logo">
-                <img src="assets/images/yankicks_logo.jpg" alt="YanKicks Logo">
-                <span>YanKicks</span>
-            </div>
-            <ul class="nav-links">
-                <li><a href="index.php">Home</a></li>
-                <li><a href="shop.php">Shop</a></li>
-                <li><a href="about.php">About Us</a></li>
-                <li><a href="customer-service.php">Customer Service</a></li>
-                <li><a href="blog.php">Blog</a></li>
-                <li><a href="contact.php">Contact Us</a></li>
-                <li><a href="legal.php">Legal</a></li>
-            </ul>
-            <div class="nav-cart">
-                <a href="<?php echo $account_link; ?>" class="account-btn" title="My Account">
-                    <svg class="account-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
-                        <circle cx="12" cy="7" r="4"></circle>
-                    </svg>
-                </a>
-                <button class="cart-btn" id="cartBtn" title="Shopping Cart">
-                    <svg class="cart-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <circle cx="9" cy="21" r="1"></circle>
-                        <circle cx="20" cy="21" r="1"></circle>
-                        <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
-                    </svg>
-                    <span class="cart-count" id="cartCount">0</span>
-                </button>
+<main>
+    <!-- Store Locations Hero -->
+    <section class="relative h-[70vh] flex items-center overflow-hidden bg-black">
+        <div class="absolute inset-0 z-0">
+            <div class="absolute inset-0 bg-gradient-to-r from-black via-black/60 to-transparent z-10"></div>
+            <img src="assets/images/yankicks_logo.jpg" alt="Store Locations" class="w-full h-full object-cover object-center opacity-50 scale-110 animate-pulse-slow">
+        </div>
+
+        <div class="relative z-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
+            <div class="max-w-3xl space-y-8">
+                <h1 class="text-6xl md:text-8xl font-black text-white uppercase tracking-tighter leading-none">
+                    Store <br> <span class="text-transparent bg-clip-text bg-gradient-to-r from-white to-gray-500">Locations</span>
+                </h1>
+                <p class="text-xl text-gray-300 font-medium max-w-lg">
+                    Visit Us in Person. Experience YanKicks Premium Athletic Footwear Up Close.
+                </p>
             </div>
         </div>
-    </nav>
+    </section>
 
-    <aside class="cart-sidebar" id="cartSidebar">
-        <div class="cart-header">
-            <h2>Your Cart</h2>
-            <button class="close-cart" id="closeCart">&times;</button>
-        </div>
-        <div class="cart-items" id="cartItems"></div>
-        <div class="cart-footer">
-            <div class="cart-total">
-                <strong>Total:</strong>
-                <span id="cartTotal">₱0.00</span>
-            </div>
-            <button class="checkout-btn">Proceed to Checkout</button>
-        </div>
-    </aside>
-
-    <main class="contact-page">
-        <div class="container">
-            <div class="contact-header">
-                <h1>Store Locations</h1>
-                <p>Visit us at one of our physical locations</p>
+    <!-- Store Locations -->
+    <section class="py-32 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-20">
+                <h2 class="text-5xl font-black uppercase tracking-tighter leading-tight">Find Us</h2>
+                <p class="text-gray-500 mt-4 text-lg">Visit our physical store or shop online from anywhere</p>
             </div>
 
-            <div class="contact-content">
-                <div class="info-item">
-                    <h3>Main Store - Binan, Laguna</h3>
-                    
-                    <p>360 San Agustin Village<br>Binan, Laguna<br>Philippines</p>
-                    <p><strong>Hours:</strong><br>Monday - Friday: 9AM - 6PM<br>Saturday: 10AM - 4PM<br>Sunday: Closed</p>
-                    <p><strong>Phone:</strong> +63 999 473 7196</p>
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-16">
+                <!-- Physical Store -->
+                <div class="space-y-8">
+                    <div class="bg-gray-50 p-8 rounded-3xl">
+                        <div class="flex items-center gap-4 mb-6">
+                            <div class="w-12 h-12 bg-black rounded-full flex items-center justify-center">
+                                <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
+                                </svg>
+                            </div>
+                            <h3 class="text-3xl font-bold">Main Store</h3>
+                        </div>
+
+                        <div class="space-y-4 text-gray-600">
+                            <p class="text-lg font-medium">360 San Agustin Village<br>Binan, Laguna<br>Philippines</p>
+
+                            <div class="border-t border-gray-200 pt-4">
+                                <h4 class="font-bold text-lg mb-2">Store Hours</h4>
+                                <div class="space-y-1">
+                                    <p><span class="font-medium">Monday - Friday:</span> 9AM - 6PM</p>
+                                    <p><span class="font-medium">Saturday:</span> 10AM - 4PM</p>
+                                    <p><span class="font-medium">Sunday:</span> Closed</p>
+                                </div>
+                            </div>
+
+                            <div class="border-t border-gray-200 pt-4">
+                                <p><span class="font-bold">Phone:</span> +63 999 473 7196</p>
+                            </div>
+                        </div>
+                    </div>
                 </div>
 
-                <div class="info-item">
-                    <h3>Online Store</h3>
-                    <p>Shop 24/7 from anywhere in the world through our online store. Free shipping available on orders over $100.</p>
-                </div>
-            </div>
-        </div>
-    </main>
+                <!-- Online Store -->
+                <div class="space-y-8">
+                    <div class="bg-gray-50 p-8 rounded-3xl">
+                        <div class="flex items-center gap-4 mb-6">
+                            <div class="w-12 h-12 bg-black rounded-full flex items-center justify-center">
+                                <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+                                </svg>
+                            </div>
+                            <h3 class="text-3xl font-bold">Online Store</h3>
+                        </div>
 
-    <footer class="footer">
-        <div class="container">
-            <div class="footer-content">
-                <div class="footer-section">
-                    <h4>About Us</h4>
-                    <ul>
-                        <li><a href="our-story.php">Our Story</a></li>
-                        <li><a href="mission-vision.php">Mission/Vision</a></li>
-                        <li><a href="why-choose-us.php">Why Choose Us</a></li>
-                        <li><a href="store-locations.php">Store Locations</a></li>
-                    </ul>
-                </div>
-                <div class="footer-section">
-                    <h4>Customer Service</h4>
-                    <ul>
-                        <li><a href="shipping-delivery.php">Shipping & Delivery Info</a></li>
-                        <li><a href="returns-exchange.php">Returns & Exchange Policy</a></li>
-                        <li><a href="faqs.php">FAQs</a></li>
-                        <li><a href="payment-options.php">Payment Options</a></li>
-                        <li><a href="size-guide.php">Size Guide</a></li>
-                    </ul>
-                </div>
-                <div class="footer-section">
-                    <h4>Legal</h4>
-                    <ul>
-                        <li><a href="privacy-policy.php">Privacy Policy</a></li>
-                        <li><a href="terms-conditions.php">Terms & Conditions</a></li>
-                    </ul>
-                </div>
-                <div class="footer-section">
-                    <h4>Follow Us</h4>
-                    <div class="social-links">
-                        <a href="social-media.php">Facebook</a>
-                        <a href="social-media.php">Instagram</a>
-                        <a href="social-media.php">Twitter</a>
+                        <div class="space-y-4 text-gray-600">
+                            <p class="text-lg">Shop 24/7 from anywhere in the world through our online store. Free shipping available on orders over $100.</p>
+
+                            <div class="border-t border-gray-200 pt-4">
+                                <h4 class="font-bold text-lg mb-2">Online Shopping Benefits</h4>
+                                <ul class="space-y-2">
+                                    <li class="flex items-center gap-2">
+                                        <svg class="w-4 h-4 text-green-500" fill="currentColor" viewBox="0 0 20 20">
+                                            <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                                        </svg>
+                                        24/7 Shopping Availability
+                                    </li>
+                                    <li class="flex items-center gap-2">
+                                        <svg class="w-4 h-4 text-green-500" fill="currentColor" viewBox="0 0 20 20">
+                                            <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                                        </svg>
+                                        Free Shipping Over $100
+                                    </li>
+                                    <li class="flex items-center gap-2">
+                                        <svg class="w-4 h-4 text-green-500" fill="currentColor" viewBox="0 0 20 20">
+                                            <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                                        </svg>
+                                        Easy Returns & Exchanges
+                                    </li>
+                                    <li class="flex items-center gap-2">
+                                        <svg class="w-4 h-4 text-green-500" fill="currentColor" viewBox="0 0 20 20">
+                                            <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                                        </svg>
+                                        Secure Payment Options
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
-            <div class="footer-bottom">
-                <p>&copy; 2023 YanKicks. All rights reserved.</p>
-            </div>
         </div>
-    </footer>
+    </section>
+</main>
 
-    <script src="script.js"></script>
-</body>
-</html>
+<?php include 'footer.php'; ?>

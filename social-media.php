@@ -1,140 +1,78 @@
-<?php
-session_start();
-$account_link = isset($_SESSION['user_id']) ? 'account.php' : 'login-register.php';
-?>
+<?php include 'header.php'; ?>
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Social Media Links - YanKicks</title>
-    <link rel="stylesheet" href="styles.css">
-</head>
-<body>
-    <nav class="navbar">
-        <div class="nav-container">
-            <div class="nav-logo">
-                <img src="assets/images/yankicks_logo.jpg" alt="YanKicks Logo">
-                <span>YanKicks</span>
-            </div>
-            <ul class="nav-links">
-                <li><a href="index.php">Home</a></li>
-                <li><a href="shop.php">Shop</a></li>
-                <li><a href="about.php">About Us</a></li>
-                <li><a href="customer-service.php">Customer Service</a></li>
-                <li><a href="blog.php">Blog</a></li>
-                <li><a href="contact.php">Contact Us</a></li>
-                <li><a href="legal.php">Legal</a></li>
-            </ul>
-            <div class="nav-cart">
-                <a href="<?php echo $account_link; ?>" class="account-btn" title="My Account">
-                    <svg class="account-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
-                        <circle cx="12" cy="7" r="4"></circle>
-                    </svg>
-                </a>
-                <button class="cart-btn" id="cartBtn" title="Shopping Cart">
-                    <svg class="cart-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <circle cx="9" cy="21" r="1"></circle>
-                        <circle cx="20" cy="21" r="1"></circle>
-                        <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
-                    </svg>
-                    <span class="cart-count" id="cartCount">0</span>
-                </button>
+<main>
+    <!-- Social Media Hero -->
+    <section class="relative h-[70vh] flex items-center overflow-hidden bg-black">
+        <div class="absolute inset-0 z-0">
+            <div class="absolute inset-0 bg-gradient-to-r from-black via-black/60 to-transparent z-10"></div>
+            <img src="assets/images/yankicks_logo.jpg" alt="Social Media" class="w-full h-full object-cover object-center opacity-50 scale-110 animate-pulse-slow">
+        </div>
+
+        <div class="relative z-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
+            <div class="max-w-3xl space-y-8">
+                <h1 class="text-6xl md:text-8xl font-black text-white uppercase tracking-tighter leading-none">
+                    Social <br> <span class="text-transparent bg-clip-text bg-gradient-to-r from-white to-gray-500">Media</span>
+                </h1>
+                <p class="text-xl text-gray-300 font-medium max-w-lg">
+                    Connect with Us Online. Follow YanKicks for the Latest Updates and Inspiration.
+                </p>
             </div>
         </div>
-    </nav>
+    </section>
 
-    <aside class="cart-sidebar" id="cartSidebar">
-        <div class="cart-header">
-            <h2>Your Cart</h2>
-            <button class="close-cart" id="closeCart">&times;</button>
-        </div>
-        <div class="cart-items" id="cartItems"></div>
-        <div class="cart-footer">
-            <div class="cart-total">
-                <strong>Total:</strong>
-                <span id="cartTotal">₱0.00</span>
-            </div>
-            <button class="checkout-btn">Proceed to Checkout</button>
-        </div>
-    </aside>
-
-    <main class="contact-page">
-        <div class="container">
-            <div class="contact-header">
-                <h1>Social Media Links</h1>
-                <p>Connect with us on social media</p>
+    <!-- Social Media Links -->
+    <section class="py-32 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-20">
+                <h2 class="text-5xl font-black uppercase tracking-tighter leading-tight">Follow Us</h2>
+                <p class="text-gray-500 mt-4 text-lg">Stay connected and get the latest updates</p>
             </div>
 
-            <div class="contact-content">
-                <div class="contact-info">
-                    <h2>Follow Us</h2>
-                    <div class="info-item">
-                        <h3>Facebook 
-
-[Image of Facebook logo]
-</h3>
-                        <p>@YanKicksOfficial</p>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-12">
+                <!-- Facebook -->
+                <div class="group">
+                    <div class="bg-blue-600 p-12 rounded-3xl text-center text-white hover:bg-blue-700 transition-all transform hover:scale-105">
+                        <div class="w-20 h-20 bg-white rounded-full flex items-center justify-center mx-auto mb-8">
+                            <svg class="w-10 h-10 text-blue-600" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+                            </svg>
+                        </div>
+                        <h3 class="text-3xl font-bold mb-4">Facebook</h3>
+                        <p class="text-blue-100 mb-6">@YanKicksOfficial</p>
+                        <a href="#" class="inline-block bg-white text-blue-600 px-8 py-4 rounded-full font-bold hover:bg-gray-100 transition-colors">Follow Us</a>
                     </div>
-                    <div class="info-item">
-                        <h3>Instagram </h3>
-                        <p>@yankicks</p>
+                </div>
+
+                <!-- Instagram -->
+                <div class="group">
+                    <div class="bg-gradient-to-r from-purple-500 via-pink-500 to-orange-500 p-12 rounded-3xl text-center text-white hover:from-purple-600 hover:via-pink-600 hover:to-orange-600 transition-all transform hover:scale-105">
+                        <div class="w-20 h-20 bg-white rounded-full flex items-center justify-center mx-auto mb-8">
+                            <svg class="w-10 h-10 text-pink-500" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+                            </svg>
+                        </div>
+                        <h3 class="text-3xl font-bold mb-4">Instagram</h3>
+                        <p class="text-pink-100 mb-6">@yankicks</p>
+                        <a href="#" class="inline-block bg-white text-pink-500 px-8 py-4 rounded-full font-bold hover:bg-gray-100 transition-colors">Follow Us</a>
                     </div>
-                    <div class="info-item">
-                        <h3>Twitter </h3>
-                        <p>@YanKicks</p>
+                </div>
+
+                <!-- Twitter -->
+                <div class="group">
+                    <div class="bg-blue-400 p-12 rounded-3xl text-center text-white hover:bg-blue-500 transition-all transform hover:scale-105">
+                        <div class="w-20 h-20 bg-white rounded-full flex items-center justify-center mx-auto mb-8">
+                            <svg class="w-10 h-10 text-blue-400" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M23.953 4.57a10 10 0 01-2.825.775 4.958 4.958 0 002.163-2.723c-.951.555-2.005.959-3.127 1.184a4.92 4.92 0 00-8.384 4.482C7.69 8.095 4.067 6.13 1.64 3.162a4.822 4.822 0 00-.666 2.475c0 1.71.87 3.213 2.188 4.096a4.904 4.904 0 01-2.228-.616v.06a4.923 4.923 0 003.946 4.827 4.996 4.996 0 01-2.212.085 4.936 4.936 0 004.604 3.417 9.867 9.867 0 01-6.102 2.105c-.39 0-.779-.023-1.17-.067a13.995 13.995 0 007.557 2.209c9.053 0 13.998-7.496 13.998-13.985 0-.21 0-.42-.015-.63A9.935 9.935 0 0024 4.59z"/>
+                            </svg>
+                        </div>
+                        <h3 class="text-3xl font-bold mb-4">Twitter</h3>
+                        <p class="text-blue-100 mb-6">@YanKicks</p>
+                        <a href="#" class="inline-block bg-white text-blue-400 px-8 py-4 rounded-full font-bold hover:bg-gray-100 transition-colors">Follow Us</a>
                     </div>
                 </div>
             </div>
         </div>
-    </main>
+    </section>
+</main>
 
-    <footer class="footer">
-        <div class="container">
-            <div class="footer-content">
-                <div class="footer-section">
-                    <h4>About Us</h4>
-                    <ul>
-                        <li><a href="our-story.php">Our Story</a></li>
-                        <li><a href="mission-vision.php">Mission/Vision</a></li>
-                        <li><a href="why-choose-us.php">Why Choose Us</a></li>
-                        <li><a href="store-locations.php">Store Locations</a></li>
-                    </ul>
-                </div>
-                <div class="footer-section">
-                    <h4>Customer Service</h4>
-                    <ul>
-                        <li><a href="shipping-delivery.php">Shipping & Delivery Info</a></li>
-                        <li><a href="returns-exchange.php">Returns & Exchange Policy</a></li>
-                        <li><a href="faqs.php">FAQs</a></li>
-                        <li><a href="payment-options.php">Payment Options</a></li>
-                        <li><a href="size-guide.php">Size Guide</a></li>
-                    </ul>
-                </div>
-                <div class="footer-section">
-                    <h4>Legal</h4>
-                    <ul>
-                        <li><a href="privacy-policy.php">Privacy Policy</a></li>
-                        <li><a href="terms-conditions.php">Terms & Conditions</a></li>
-                    </ul>
-                </div>
-                <div class="footer-section">
-                    <h4>Follow Us</h4>
-                    <div class="social-links">
-                        <a href="social-media.php">Facebook</a>
-                        <a href="social-media.php">Instagram</a>
-                        <a href="social-media.php">Twitter</a>
-                    </div>
-                </div>
-            </div>
-            <div class="footer-bottom">
-                <p>&copy; 2023 YanKicks. All rights reserved.</p>
-            </div>
-        </div>
-    </footer>
-
-    <script src="script.js"></script>
-</body>
-</html>
+<?php include 'footer.php'; ?>

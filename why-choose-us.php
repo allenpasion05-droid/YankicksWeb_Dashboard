@@ -1,148 +1,96 @@
-<?php
-session_start();
-$account_link = isset($_SESSION['user_id']) ? 'account.php' : 'login-register.php';
-?>
+<?php include 'header.php'; ?>
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Why Choose Us - YanKicks</title>
-    <link rel="stylesheet" href="styles.css">
-</head>
-<body>
-    <nav class="navbar">
-        <div class="nav-container">
-            <div class="nav-logo">
-                <img src="assets/images/yankicks_logo.jpg" alt="YanKicks Logo">
-                <span>YanKicks</span>
-            </div>
-            <ul class="nav-links">
-                <li><a href="index.php">Home</a></li>
-                <li><a href="shop.php">Shop</a></li>
-                <li><a href="about.php">About Us</a></li>
-                <li><a href="customer-service.php">Customer Service</a></li>
-                <li><a href="blog.php">Blog</a></li>
-                <li><a href="contact.php">Contact Us</a></li>
-                <li><a href="legal.php">Legal</a></li>
-            </ul>
-            <div class="nav-cart">
-                <a href="<?php echo $account_link; ?>" class="account-btn" title="My Account">
-                    <svg class="account-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
-                        <circle cx="12" cy="7" r="4"></circle>
-                    </svg>
-                </a>
-                <button class="cart-btn" id="cartBtn" title="Shopping Cart">
-                    <svg class="cart-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <circle cx="9" cy="21" r="1"></circle>
-                        <circle cx="20" cy="21" r="1"></circle>
-                        <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
-                    </svg>
-                    <span class="cart-count" id="cartCount">0</span>
-                </button>
+<main>
+    <!-- Why Choose Us Hero -->
+    <section class="relative h-[70vh] flex items-center overflow-hidden bg-black">
+        <div class="absolute inset-0 z-0">
+            <div class="absolute inset-0 bg-gradient-to-r from-black via-black/60 to-transparent z-10"></div>
+            <img src="assets/images/yankicks_logo.jpg" alt="Why Choose Us" class="w-full h-full object-cover object-center opacity-50 scale-110 animate-pulse-slow">
+        </div>
+
+        <div class="relative z-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
+            <div class="max-w-3xl space-y-8">
+                <h1 class="text-6xl md:text-8xl font-black text-white uppercase tracking-tighter leading-none">
+                    Why Choose <br> <span class="text-transparent bg-clip-text bg-gradient-to-r from-white to-gray-500">YanKicks</span>
+                </h1>
+                <p class="text-xl text-gray-300 font-medium max-w-lg">
+                    What Sets Us Apart. Experience the Difference in Premium Athletic Footwear.
+                </p>
             </div>
         </div>
-    </nav>
+    </section>
 
-    <aside class="cart-sidebar" id="cartSidebar">
-        <div class="cart-header">
-            <h2>Your Cart</h2>
-            <button class="close-cart" id="closeCart">&times;</button>
-        </div>
-        <div class="cart-items" id="cartItems"></div>
-        <div class="cart-footer">
-            <div class="cart-total">
-                <strong>Total:</strong>
-                <span id="cartTotal">₱0.00</span>
-            </div>
-            <button class="checkout-btn">Proceed to Checkout</button>
-        </div>
-    </aside>
-
-    <main class="about-page">
-        <div class="container">
-            <div class="about-hero">
-                <h1>Why Choose YanKicks</h1>
-                <p>What Sets Us Apart</p>
+    <!-- Why Choose Us Grid -->
+    <section class="py-32 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-20">
+                <h2 class="text-5xl font-black uppercase tracking-tighter leading-tight">What Makes Us Different</h2>
+                <p class="text-gray-500 mt-4 text-lg">Six reasons why YanKicks is your ultimate choice</p>
             </div>
 
-            <div class="about-content">
-                <div class="values-list">
-                    <div class="value">
-                        <h3>Premium Quality</h3>
-                        <p>Every pair of YanKicks is crafted with the finest materials and cutting-edge technology. We don't compromise on quality—from material selection to manufacturing processes, excellence is our standard.</p>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12">
+                <div class="text-center space-y-6">
+                    <div class="w-20 h-20 bg-black rounded-full flex items-center justify-center mx-auto">
+                        <svg class="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                        </svg>
                     </div>
-                    <div class="value">
-                        <h3>Innovative Design</h3>
-                        <p>Our design team continuously pushes the boundaries of athletic footwear. We combine style with unmatched performance, creating shoes that look great and perform even better.</p>
+                    <h3 class="text-2xl font-bold">Premium Quality</h3>
+                    <p class="text-gray-600 leading-relaxed">Every pair of YanKicks is crafted with the finest materials and cutting-edge technology. We don't compromise on quality—from material selection to manufacturing processes, excellence is our standard.</p>
+                </div>
+
+                <div class="text-center space-y-6">
+                    <div class="w-20 h-20 bg-black rounded-full flex items-center justify-center mx-auto">
+                        <svg class="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zM21 5a2 2 0 00-2-2h-4a2 2 0 00-2 2v12a4 4 0 004 4h4a2 2 0 002-2V5z"/>
+                        </svg>
                     </div>
-                    <div class="value">
-                        <h3>Sustainability</h3>
-                        <p>We're committed to ethical production practices and minimizing our environmental impact. When you choose YanKicks, you're supporting a brand that cares about the planet.</p>
+                    <h3 class="text-2xl font-bold">Innovative Design</h3>
+                    <p class="text-gray-600 leading-relaxed">Our design team continuously pushes the boundaries of athletic footwear. We combine style with unmatched performance, creating shoes that look great and perform even better.</p>
+                </div>
+
+                <div class="text-center space-y-6">
+                    <div class="w-20 h-20 bg-black rounded-full flex items-center justify-center mx-auto">
+                        <svg class="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064"/>
+                        </svg>
                     </div>
-                    <div class="value">
-                        <h3>Customer Focus</h3>
-                        <p>Your satisfaction is our priority. We provide exceptional customer service, easy returns, and a seamless shopping experience from browsing to delivery.</p>
+                    <h3 class="text-2xl font-bold">Sustainability</h3>
+                    <p class="text-gray-600 leading-relaxed">We're committed to ethical production practices and minimizing our environmental impact. When you choose YanKicks, you're supporting a brand that cares about the planet.</p>
+                </div>
+
+                <div class="text-center space-y-6">
+                    <div class="w-20 h-20 bg-black rounded-full flex items-center justify-center mx-auto">
+                        <svg class="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/>
+                        </svg>
                     </div>
-                    <div class="value">
-                        <h3>Proven Performance</h3>
-                        <p>Our shoes are trusted by athletes worldwide. Whether you're running, playing basketball, or just walking around, YanKicks delivers the performance you need.</p>
+                    <h3 class="text-2xl font-bold">Customer Focus</h3>
+                    <p class="text-gray-600 leading-relaxed">Your satisfaction is our priority. We provide exceptional customer service, easy returns, and a seamless shopping experience from browsing to delivery.</p>
+                </div>
+
+                <div class="text-center space-y-6">
+                    <div class="w-20 h-20 bg-black rounded-full flex items-center justify-center mx-auto">
+                        <svg class="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+                        </svg>
                     </div>
-                    <div class="value">
-                        <h3>Competitive Pricing</h3>
-                        <p>Premium quality doesn't have to mean premium prices. We offer competitive pricing without sacrificing the quality and innovation you deserve.</p>
+                    <h3 class="text-2xl font-bold">Proven Performance</h3>
+                    <p class="text-gray-600 leading-relaxed">Our shoes are trusted by athletes worldwide. Whether you're running, playing basketball, or just walking around, YanKicks delivers the performance you need.</p>
+                </div>
+
+                <div class="text-center space-y-6">
+                    <div class="w-20 h-20 bg-black rounded-full flex items-center justify-center mx-auto">
+                        <svg class="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1"/>
+                        </svg>
                     </div>
+                    <h3 class="text-2xl font-bold">Competitive Pricing</h3>
+                    <p class="text-gray-600 leading-relaxed">Premium quality doesn't have to mean premium prices. We offer competitive pricing without sacrificing the quality and innovation you deserve.</p>
                 </div>
             </div>
         </div>
-    </main>
+    </section>
+</main>
 
-    <footer class="footer">
-        <div class="container">
-            <div class="footer-content">
-                <div class="footer-section">
-                    <h4>About Us</h4>
-                    <ul>
-                        <li><a href="our-story.php">Our Story</a></li>
-                        <li><a href="mission-vision.php">Mission/Vision</a></li>
-                        <li><a href="why-choose-us.php">Why Choose Us</a></li>
-                        <li><a href="store-locations.php">Store Locations</a></li>
-                    </ul>
-                </div>
-                <div class="footer-section">
-                    <h4>Customer Service</h4>
-                    <ul>
-                        <li><a href="shipping-delivery.php">Shipping & Delivery Info</a></li>
-                        <li><a href="returns-exchange.php">Returns & Exchange Policy</a></li>
-                        <li><a href="faqs.php">FAQs</a></li>
-                        <li><a href="payment-options.php">Payment Options</a></li>
-                        <li><a href="size-guide.php">Size Guide</a></li>
-                    </ul>
-                </div>
-                <div class="footer-section">
-                    <h4>Legal</h4>
-                    <ul>
-                        <li><a href="privacy-policy.php">Privacy Policy</a></li>
-                        <li><a href="terms-conditions.php">Terms & Conditions</a></li>
-                    </ul>
-                </div>
-                <div class="footer-section">
-                    <h4>Follow Us</h4>
-                    <div class="social-links">
-                        <a href="social-media.php">Facebook</a>
-                        <a href="social-media.php">Instagram</a>
-                        <a href="social-media.php">Twitter</a>
-                    </div>
-                </div>
-            </div>
-            <div class="footer-bottom">
-                <p>&copy; 2023 YanKicks. All rights reserved.</p>
-            </div>
-        </div>
-    </footer>
-
-    <script src="script.js"></script>
-</body>
-</html>
+<?php include 'footer.php'; ?>

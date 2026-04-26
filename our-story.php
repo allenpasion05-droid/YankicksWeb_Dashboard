@@ -1,136 +1,78 @@
-<?php
-session_start();
-$account_link = isset($_SESSION['user_id']) ? 'account.php' : 'login-register.php';
-?>
+<?php include 'header.php'; ?>
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Our Story - YanKicks</title>
-    <link rel="stylesheet" href="styles.css">
-</head>
-<body>
-    <nav class="navbar">
-        <div class="nav-container">
-            <div class="nav-logo">
-                <img src="assets/images/yankicks_logo.jpg" alt="YanKicks Logo">
-                <span>YanKicks</span>
-            </div>
-            <ul class="nav-links">
-                <li><a href="index.php">Home</a></li>
-                <li><a href="shop.php">Shop</a></li>
-                <li><a href="about.php">About Us</a></li>
-                <li><a href="customer-service.php">Customer Service</a></li>
-                <li><a href="blog.php">Blog</a></li>
-                <li><a href="contact.php">Contact Us</a></li>
-                <li><a href="legal.php">Legal</a></li>
-            </ul>
-            <div class="nav-cart">
-                <a href="<?php echo $account_link; ?>" class="account-btn" title="My Account">
-                    <svg class="account-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
-                        <circle cx="12" cy="7" r="4"></circle>
-                    </svg>
-                </a>
-                <button class="cart-btn" id="cartBtn" title="Shopping Cart">
-                    <svg class="cart-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <circle cx="9" cy="21" r="1"></circle>
-                        <circle cx="20" cy="21" r="1"></circle>
-                        <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
-                    </svg>
-                    <span class="cart-count" id="cartCount">0</span>
-                </button>
+<main>
+    <!-- Our Story Hero -->
+    <section class="relative h-[70vh] flex items-center overflow-hidden bg-black">
+        <div class="absolute inset-0 z-0">
+            <div class="absolute inset-0 bg-gradient-to-r from-black via-black/60 to-transparent z-10"></div>
+            <img src="assets/images/yankicks_logo.jpg" alt="Our Story" class="w-full h-full object-cover object-center opacity-50 scale-110 animate-pulse-slow">
+        </div>
+
+        <div class="relative z-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
+            <div class="max-w-3xl space-y-8">
+                <h1 class="text-6xl md:text-8xl font-black text-white uppercase tracking-tighter leading-none">
+                    Our <br> <span class="text-transparent bg-clip-text bg-gradient-to-r from-white to-gray-500">Story</span>
+                </h1>
+                <p class="text-xl text-gray-300 font-medium max-w-lg">
+                    The Journey of YanKicks. Redefining Excellence in Athletic Footwear Since 2023.
+                </p>
             </div>
         </div>
-    </nav>
+    </section>
 
-    <aside class="cart-sidebar" id="cartSidebar">
-        <div class="cart-header">
-            <h2>Your Cart</h2>
-            <button class="close-cart" id="closeCart">&times;</button>
-        </div>
-        <div class="cart-items" id="cartItems"></div>
-        <div class="cart-footer">
-            <div class="cart-total">
-                <strong>Total:</strong>
-                <span id="cartTotal">₱0.00</span>
-            </div>
-            <button class="checkout-btn">Proceed to Checkout</button>
-        </div>
-    </aside>
-
-    <main class="about-page">
-        <div class="container">
-            <div class="about-hero">
-                <h1>Our Story</h1>
-                <p>The Journey of YanKicks</p>
-            </div>
-
-            <div class="about-content">
-                <div class="about-section">
-                    <h2>The Beginning</h2>
-                    <p>YanKicks was founded in 2023 with a simple yet powerful vision: to revolutionize the athletic footwear industry by combining cutting-edge technology, innovative design, and sustainable practices. What started as a passion project has grown into a trusted brand recognized by athletes and enthusiasts worldwide.</p>
+    <!-- The Beginning Section -->
+    <section class="py-32 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-20 items-center">
+                <div class="space-y-10">
+                    <h2 class="text-5xl font-black uppercase tracking-tighter leading-tight">The Beginning</h2>
+                    <p class="text-gray-600 text-lg leading-relaxed">
+                        YanKicks was founded in 2023 with a simple yet powerful vision: to revolutionize the athletic footwear industry by combining cutting-edge technology, innovative design, and sustainable practices. What started as a passion project has grown into a trusted brand recognized by athletes and enthusiasts worldwide.
+                    </p>
                 </div>
-
-                <div class="about-section">
-                    <h2>Our Mission</h2>
-                    <p>We believe that great footwear is the foundation of every athlete's success. Our mission is to create premium athletic shoes that not only enhance performance but also reflect our commitment to quality, innovation, and environmental responsibility.</p>
-                </div>
-
-                <div class="about-section">
-                    <h2>Where We Are Today</h2>
-                    <p>Today, YanKicks continues to push boundaries in athletic footwear design. We've expanded our product line to include running shoes, basketball sneakers, and lifestyle footwear, all while maintaining our core values of quality, innovation, and sustainability.</p>
+                <div class="relative">
+                    <div class="aspect-square rounded-full bg-black/5 absolute -top-10 -right-10 w-full h-full -z-10"></div>
+                    <img src="assets/images/running_shoes.jpeg" alt="The Beginning" class="w-full rounded-3xl shadow-2xl transform -rotate-3 hover:rotate-0 transition-transform duration-500">
                 </div>
             </div>
         </div>
-    </main>
+    </section>
 
-    <footer class="footer">
-        <div class="container">
-            <div class="footer-content">
-                <div class="footer-section">
-                    <h4>About Us</h4>
-                    <ul>
-                        <li><a href="our-story.php">Our Story</a></li>
-                        <li><a href="mission-vision.php">Mission/Vision</a></li>
-                        <li><a href="why-choose-us.php">Why Choose Us</a></li>
-                        <li><a href="store-locations.php">Store Locations</a></li>
-                    </ul>
+    <!-- Our Mission Section -->
+    <section class="py-32 bg-gray-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-20 items-center">
+                <div class="relative order-2 lg:order-1">
+                    <div class="aspect-square rounded-full bg-black/5 absolute -top-10 -left-10 w-full h-full -z-10"></div>
+                    <img src="assets/images/basketball_shoes.jpg" alt="Our Mission" class="w-full rounded-3xl shadow-2xl transform rotate-3 hover:rotate-0 transition-transform duration-500">
                 </div>
-                <div class="footer-section">
-                    <h4>Customer Service</h4>
-                    <ul>
-                        <li><a href="shipping-delivery.php">Shipping & Delivery Info</a></li>
-                        <li><a href="returns-exchange.php">Returns & Exchange Policy</a></li>
-                        <li><a href="faqs.php">FAQs</a></li>
-                        <li><a href="payment-options.php">Payment Options</a></li>
-                        <li><a href="size-guide.php">Size Guide</a></li>
-                    </ul>
+                <div class="space-y-10 order-1 lg:order-2">
+                    <h2 class="text-5xl font-black uppercase tracking-tighter leading-tight">Our Mission</h2>
+                    <p class="text-gray-600 text-lg leading-relaxed">
+                        We believe that great footwear is the foundation of every athlete's success. Our mission is to create premium athletic shoes that not only enhance performance but also reflect our commitment to quality, innovation, and environmental responsibility.
+                    </p>
                 </div>
-                <div class="footer-section">
-                    <h4>Legal</h4>
-                    <ul>
-                        <li><a href="privacy-policy.php">Privacy Policy</a></li>
-                        <li><a href="terms-conditions.php">Terms & Conditions</a></li>
-                    </ul>
-                </div>
-                <div class="footer-section">
-                    <h4>Follow Us</h4>
-                    <div class="social-links">
-                        <a href="social-media.php">Facebook</a>
-                        <a href="social-media.php">Instagram</a>
-                        <a href="social-media.php">Twitter</a>
-                    </div>
-                </div>
-            </div>
-            <div class="footer-bottom">
-                <p>&copy; 2023 YanKicks. All rights reserved.</p>
             </div>
         </div>
-    </footer>
+    </section>
 
-    <script src="script.js"></script>
-</body>
-</html>
+    <!-- Where We Are Today Section -->
+    <section class="py-32 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-20 items-center">
+                <div class="space-y-10">
+                    <h2 class="text-5xl font-black uppercase tracking-tighter leading-tight">Where We Are Today</h2>
+                    <p class="text-gray-600 text-lg leading-relaxed">
+                        Today, YanKicks continues to push boundaries in athletic footwear design. We've expanded our product line to include running shoes, basketball sneakers, and lifestyle footwear, all while maintaining our core values of quality, innovation, and sustainability.
+                    </p>
+                </div>
+                <div class="relative">
+                    <div class="aspect-square rounded-full bg-black/5 absolute -top-10 -right-10 w-full h-full -z-10"></div>
+                    <img src="assets/images/football_shoes.jpg" alt="Where We Are Today" class="w-full rounded-3xl shadow-2xl transform -rotate-3 hover:rotate-0 transition-transform duration-500">
+                </div>
+            </div>
+        </div>
+    </section>
+</main>
+
+<?php include 'footer.php'; ?>

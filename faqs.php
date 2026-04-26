@@ -1,154 +1,122 @@
-<?php
-session_start();
-$account_link = isset($_SESSION['user_id']) ? 'account.php' : 'login-register.php';
-?>
+<?php include 'header.php'; ?>
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FAQs - YanKicks</title>
-    <link rel="stylesheet" href="styles.css">
-</head>
-<body>
-    <nav class="navbar">
-        <div class="nav-container">
-            <div class="nav-logo">
-                <img src="assets/images/yankicks_logo.jpg" alt="YanKicks Logo">
-                <span>YanKicks</span>
-            </div>
-            <ul class="nav-links">
-                <li><a href="index.php">Home</a></li>
-                <li><a href="shop.php">Shop</a></li>
-                <li><a href="about.php">About Us</a></li>
-                <li><a href="customer-service.php">Customer Service</a></li>
-                <li><a href="blog.php">Blog</a></li>
-                <li><a href="contact.php">Contact Us</a></li>
-                <li><a href="legal.php">Legal</a></li>
-            </ul>
-            <div class="nav-cart">
-                <a href="<?php echo $account_link; ?>" class="account-btn" title="My Account">
-                    <svg class="account-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
-                        <circle cx="12" cy="7" r="4"></circle>
-                    </svg>
-                </a>
-                <button class="cart-btn" id="cartBtn" title="Shopping Cart">
-                    <svg class="cart-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <circle cx="9" cy="21" r="1"></circle>
-                        <circle cx="20" cy="21" r="1"></circle>
-                        <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
-                    </svg>
-                    <span class="cart-count" id="cartCount">0</span>
-                </button>
+<main>
+    <!-- FAQs Hero -->
+    <section class="relative h-[70vh] flex items-center overflow-hidden bg-black">
+        <div class="absolute inset-0 z-0">
+            <div class="absolute inset-0 bg-gradient-to-r from-black via-black/60 to-transparent z-10"></div>
+            <img src="assets/images/yankicks_logo.jpg" alt="FAQs" class="w-full h-full object-cover object-center opacity-50 scale-110 animate-pulse-slow">
+        </div>
+
+        <div class="relative z-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
+            <div class="max-w-3xl space-y-8">
+                <h1 class="text-6xl md:text-8xl font-black text-white uppercase tracking-tighter leading-none">
+                    Frequently <br> <span class="text-transparent bg-clip-text bg-gradient-to-r from-white to-gray-500">Asked Questions</span>
+                </h1>
+                <p class="text-xl text-gray-300 font-medium max-w-lg">
+                    Find Answers to Common Questions. Get the Information You Need.
+                </p>
             </div>
         </div>
-    </nav>
+    </section>
 
-    <aside class="cart-sidebar" id="cartSidebar">
-        <div class="cart-header">
-            <h2>Your Cart</h2>
-            <button class="close-cart" id="closeCart">&times;</button>
-        </div>
-        <div class="cart-items" id="cartItems"></div>
-        <div class="cart-footer">
-            <div class="cart-total">
-                <strong>Total:</strong>
-                <span id="cartTotal">₱0.00</span>
-            </div>
-            <button class="checkout-btn">Proceed to Checkout</button>
-        </div>
-    </aside>
+    <!-- FAQs Content -->
+    <section class="py-32 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-16">
+                <!-- General Questions -->
+                <div class="space-y-8">
+                    <div class="flex items-center gap-4 mb-8">
+                        <div class="w-12 h-12 bg-black rounded-full flex items-center justify-center">
+                            <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                            </svg>
+                        </div>
+                        <h2 class="text-3xl font-bold">General Questions</h2>
+                    </div>
 
-    <main class="about-page">
-        <div class="container">
-            <div class="about-hero">
-                <h1>Frequently Asked Questions</h1>
-                <p>Find answers to common questions</p>
-            </div>
+                    <div class="space-y-6">
+                        <div>
+                            <h3 class="text-xl font-semibold mb-2">What is YanKicks?</h3>
+                            <p class="text-gray-600">YanKicks is a premium athletic footwear brand specializing in running shoes, basketball sneakers, and lifestyle footwear.</p>
+                        </div>
 
-            <div class="about-content">
-                <div class="about-section">
-                    <h2>General Questions</h2>
-                    <p><strong>Q: What is YanKicks?</strong><br>
-                    A: YanKicks is a premium athletic footwear brand specializing in running shoes, basketball sneakers, and lifestyle footwear.</p>
-                    
-                    <p><strong>Q: Where are you located?</strong><br>
-                    A: Our main store is located in Binan, Laguna, Philippines. We also operate an online store that ships worldwide.</p>
+                        <div>
+                            <h3 class="text-xl font-semibold mb-2">Where are you located?</h3>
+                            <p class="text-gray-600">Our main store is located in Binan, Laguna, Philippines. We also operate an online store that ships worldwide.</p>
+                        </div>
+                    </div>
                 </div>
 
-                <div class="about-section">
-                    <h2>Ordering & Payment</h2>
-                    <p><strong>Q: What payment methods do you accept?</strong><br>
-                    A: We accept all major credit cards, PayPal, and bank transfers. See our Payment Options page for more details.</p>
-                    
-                    <p><strong>Q: How long does shipping take?</strong><br>
-                    A: Standard shipping takes 5-7 business days. Express and overnight options are also available.</p>
+                <!-- Ordering & Payment -->
+                <div class="space-y-8">
+                    <div class="flex items-center gap-4 mb-8">
+                        <div class="w-12 h-12 bg-black rounded-full flex items-center justify-center">
+                            <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/>
+                            </svg>
+                        </div>
+                        <h2 class="text-3xl font-bold">Ordering & Payment</h2>
+                    </div>
+
+                    <div class="space-y-6">
+                        <div>
+                            <h3 class="text-xl font-semibold mb-2">What payment methods do you accept?</h3>
+                            <p class="text-gray-600">We accept all major credit cards, PayPal, and bank transfers. See our Payment Options page for more details.</p>
+                        </div>
+
+                        <div>
+                            <h3 class="text-xl font-semibold mb-2">How long does shipping take?</h3>
+                            <p class="text-gray-600">Standard shipping takes 5-7 business days. Express and overnight options are also available.</p>
+                        </div>
+                    </div>
                 </div>
 
-                <div class="about-section">
-                    <h2>Products & Sizing</h2>
-                    <p><strong>Q: How do I find my size?</strong><br>
-                    A: Check our Size Guide page for detailed sizing information and measurement instructions.</p>
-                    
-                    <p><strong>Q: Do you offer half sizes?</strong><br>
-                    A: Yes, we offer half sizes for most of our products.</p>
+                <!-- Products & Sizing -->
+                <div class="space-y-8">
+                    <div class="flex items-center gap-4 mb-8">
+                        <div class="w-12 h-12 bg-black rounded-full flex items-center justify-center">
+                            <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
+                            </svg>
+                        </div>
+                        <h2 class="text-3xl font-bold">Products & Sizing</h2>
+                    </div>
+
+                    <div class="space-y-6">
+                        <div>
+                            <h3 class="text-xl font-semibold mb-2">How do I find my size?</h3>
+                            <p class="text-gray-600">Check our Size Guide page for detailed sizing information and measurement instructions.</p>
+                        </div>
+
+                        <div>
+                            <h3 class="text-xl font-semibold mb-2">Do you offer half sizes?</h3>
+                            <p class="text-gray-600">Yes, we offer half sizes for most of our products.</p>
+                        </div>
+                    </div>
                 </div>
 
-                <div class="about-section">
-                    <h2>Returns & Exchanges</h2>
-                    <p><strong>Q: Can I return or exchange my purchase?</strong><br>
-                    A: Yes, we offer a 30-day return and exchange policy. See our Returns & Exchange Policy page for details.</p>
-                </div>
-            </div>
-        </div>
-    </main>
+                <!-- Returns & Exchanges -->
+                <div class="space-y-8">
+                    <div class="flex items-center gap-4 mb-8">
+                        <div class="w-12 h-12 bg-black rounded-full flex items-center justify-center">
+                            <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16l-4-4m0 0l4-4m-4 4h18"/>
+                            </svg>
+                        </div>
+                        <h2 class="text-3xl font-bold">Returns & Exchanges</h2>
+                    </div>
 
-    <footer class="footer">
-        <div class="container">
-            <div class="footer-content">
-                <div class="footer-section">
-                    <h4>About Us</h4>
-                    <ul>
-                        <li><a href="our-story.php">Our Story</a></li>
-                        <li><a href="mission-vision.php">Mission/Vision</a></li>
-                        <li><a href="why-choose-us.php">Why Choose Us</a></li>
-                        <li><a href="store-locations.php">Store Locations</a></li>
-                    </ul>
-                </div>
-                <div class="footer-section">
-                    <h4>Customer Service</h4>
-                    <ul>
-                        <li><a href="shipping-delivery.php">Shipping & Delivery Info</a></li>
-                        <li><a href="returns-exchange.php">Returns & Exchange Policy</a></li>
-                        <li><a href="faqs.php">FAQs</a></li>
-                        <li><a href="payment-options.php">Payment Options</a></li>
-                        <li><a href="size-guide.php">Size Guide</a></li>
-                    </ul>
-                </div>
-                <div class="footer-section">
-                    <h4>Legal</h4>
-                    <ul>
-                        <li><a href="privacy-policy.php">Privacy Policy</a></li>
-                        <li><a href="terms-conditions.php">Terms & Conditions</a></li>
-                    </ul>
-                </div>
-                <div class="footer-section">
-                    <h4>Follow Us</h4>
-                    <div class="social-links">
-                        <a href="social-media.php">Facebook</a>
-                        <a href="social-media.php">Instagram</a>
-                        <a href="social-media.php">Twitter</a>
+                    <div class="space-y-6">
+                        <div>
+                            <h3 class="text-xl font-semibold mb-2">Can I return or exchange my purchase?</h3>
+                            <p class="text-gray-600">Yes, we offer a 30-day return and exchange policy. See our Returns & Exchange Policy page for details.</p>
+                        </div>
                     </div>
                 </div>
             </div>
-            <div class="footer-bottom">
-                <p>&copy; 2023 YanKicks. All rights reserved.</p>
-            </div>
         </div>
-    </footer>
+    </section>
+</main>
 
-    <script src="script.js"></script>
-</body>
-</html>
+<?php include 'footer.php'; ?>

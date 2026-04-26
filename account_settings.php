@@ -68,9 +68,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $stmt_pass->execute();
         $res_pass = $stmt_pass->get_result()->fetch_assoc();
 
-        if (password_verify($current_pass, $res_pass['password'])) {
+        if ($current_pass === $res_pass['password']) {
             if ($new_pass === $confirm_pass) {
-                $new_hash = password_hash($new_pass, PASSWORD_DEFAULT);
+                $new_hash = $new_pass;
                 $stmt_update_pass = $conn->prepare("UPDATE users SET password=? WHERE id=?");
                 $stmt_update_pass->bind_param("si", $new_hash, $user_id);
                 $stmt_update_pass->execute();

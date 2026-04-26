@@ -13,7 +13,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $result = $stmt->get_result();
 
     if ($row = $result->fetch_assoc()) {
-        if (password_verify($password, $row['password'])) {
+        if ($password === $row['password']) {
             // CHECK IF BANNED
             if ($row['banned_until'] && new DateTime($row['banned_until']) > new DateTime()) {
                 $banned_date = date('M d, Y', strtotime($row['banned_until']));

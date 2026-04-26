@@ -10,149 +10,78 @@ if (isset($_SESSION['user_id'])) {
 $account_link = 'login-register.php'; // Since we are on the login page
 ?>
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login/Register - YanKicks</title>
-    <link rel="stylesheet" href="styles.css">
-</head>
-<body>
-    <nav class="navbar">
-        <div class="nav-container">
-            <div class="nav-logo">
-                <img src="assets/images/yankicks_logo.jpg" alt="YanKicks Logo">
-                <span>YanKicks</span>
-            </div>
-            <ul class="nav-links">
-                <li><a href="index.php">Home</a></li>
-                <li><a href="shop.php">Shop</a></li>
-                <li><a href="about.php">About Us</a></li>
-                <li><a href="customer-service.php">Customer Service</a></li>
-                <li><a href="blog.php">Blog</a></li>
-                <li><a href="contact.php">Contact Us</a></li>
-                <li><a href="legal.php">Legal</a></li>
-            </ul>
-            <div class="nav-cart">
-                <a href="<?php echo $account_link; ?>" class="account-btn" title="My Account">
-                    <svg class="account-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
-                        <circle cx="12" cy="7" r="4"></circle>
-                    </svg>
-                </a>
-                <button class="cart-btn" id="cartBtn" title="Shopping Cart">
-                    <svg class="cart-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <circle cx="9" cy="21" r="1"></circle>
-                        <circle cx="20" cy="21" r="1"></circle>
-                        <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
-                    </svg>
-                    <span class="cart-count" id="cartCount">0</span>
-                </button>
+<?php include 'header.php'; ?>
+
+<main>
+    <!-- Auth Hero -->
+    <section class="relative h-[40vh] flex items-center overflow-hidden bg-black">
+        <div class="absolute inset-0 z-0">
+            <div class="absolute inset-0 bg-gradient-to-r from-black via-black/60 to-transparent z-10"></div>
+            <img src="assets/images/yankicks_logo.jpg" alt="Login/Register" class="w-full h-full object-cover object-center opacity-30 scale-110 animate-pulse-slow">
+        </div>
+        
+        <div class="relative z-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
+            <div class="max-w-3xl space-y-8">
+                <h1 class="text-5xl md:text-7xl font-black text-white uppercase tracking-tighter leading-none">
+                    Welcome <br> <span class="text-transparent bg-clip-text bg-gradient-to-r from-white to-gray-500">Back</span>
+                </h1>
+                <p class="text-xl text-gray-300 font-medium max-w-lg">
+                    Sign in to your account or create a new one to access exclusive features.
+                </p>
             </div>
         </div>
-    </nav>
+    </section>
 
-    <aside class="cart-sidebar" id="cartSidebar">
-        <div class="cart-header">
-            <h2>Your Cart</h2>
-            <button class="close-cart" id="closeCart">&times;</button>
-        </div>
-        <div class="cart-items" id="cartItems"></div>
-        <div class="cart-footer">
-            <div class="cart-total">
-                <strong>Total:</strong>
-                <span id="cartTotal">₱0.00</span>
-            </div>
-            <button class="checkout-btn">Proceed to Checkout</button>
-        </div>
-    </aside>
+    <!-- Auth Forms -->
+    <section class="py-32 bg-white">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-20">
+                <!-- Login Form -->
+                <div class="space-y-8">
+                    <div>
+                        <h2 class="text-4xl font-black uppercase tracking-tighter mb-6">Sign In</h2>
+                        <p class="text-gray-600 text-lg">Welcome back! Please sign in to your account.</p>
+                    </div>
 
-    <main class="contact-page">
-        <div class="container">
-            <div class="contact-header">
-                <h1>Login / Register</h1>
-                <p>Sign in to your account or create a new one</p>
-            </div>
-
-            <div class="contact-content">
-                <form class="contact-form" id="loginForm" action="login.php" method="POST">
-                    <h2>Login</h2>
-                    <div class="form-group">
-                        <label for="loginEmail">Email Address</label>
-                        <input type="email" id="loginEmail" name="email" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="loginPassword">Password</label>
-                        <input type="password" id="loginPassword" name="password" required>
-                    </div>
-                    <button type="submit" class="submit-btn">Sign In</button>
-                </form>
-
-                <form class="contact-form" id="registerForm" action="register.php" method="POST" style="margin-top: 40px;">
-                    <h2>Create Account</h2>
-                    <div class="form-group">
-                        <label for="registerName">Full Name</label>
-                        <input type="text" id="registerName" name="full_name" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="registerEmail">Email Address</label>
-                        <input type="email" id="registerEmail" name="email" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="registerPassword">Password</label>
-                        <input type="password" id="registerPassword" name="password" required>
-                    </div>
-                    <button type="submit" class="submit-btn">Create Account</button>
-                </form>
-            </div>
-        </div>
-    </main>
-
-    <footer class="footer">
-        <div class="container">
-            <div class="footer-content">
-                <div class="footer-section">
-                    <h4>About Us</h4>
-                    <ul>
-                        <li><a href="our-story.php">Our Story</a></li>
-                        <li><a href="mission-vision.php">Mission/Vision</a></li>
-                        <li><a href="why-choose-us.php">Why Choose Us</a></li>
-                        <li><a href="store-locations.php">Store Locations</a></li>
-                    </ul>
+                    <form class="space-y-6" id="loginForm" action="login.php" method="POST">
+                        <div>
+                            <label class="block text-sm font-bold uppercase tracking-widest text-gray-400 mb-2">Email Address</label>
+                            <input type="email" name="email" required class="w-full bg-gray-50 border-none rounded-xl px-4 py-4 text-lg focus:ring-2 focus:ring-black transition-all">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-bold uppercase tracking-widest text-gray-400 mb-2">Password</label>
+                            <input type="password" name="password" required class="w-full bg-gray-50 border-none rounded-xl px-4 py-4 text-lg focus:ring-2 focus:ring-black transition-all">
+                        </div>
+                        <button type="submit" class="w-full bg-black text-white px-10 py-5 rounded-full font-bold text-lg hover:bg-gray-900 transition-all transform hover:scale-105">Sign In</button>
+                    </form>
                 </div>
-                <div class="footer-section">
-                    <h4>Customer Service</h4>
-                    <ul>
-                        <li><a href="shipping-delivery.php">Shipping & Delivery Info</a></li>
-                        <li><a href="returns-exchange.php">Returns & Exchange Policy</a></li>
-                        <li><a href="faqs.php">FAQs</a></li>
-                        <li><a href="payment-options.php">Payment Options</a></li>
-                        <li><a href="size-guide.php">Size Guide</a></li>
-                    </ul>
-                </div>
-                <div class="footer-section">
-                    <h4>Legal</h4>
-                    <ul>
-                        <li><a href="privacy-policy.php">Privacy Policy</a></li>
-                        <li><a href="terms-conditions.php">Terms & Conditions</a></li>
-                    </ul>
-                </div>
-                <div class="footer-section">
-                    <h4>Follow Us</h4>
-                    <div class="social-links">
-                        <a href="social-media.php">Facebook</a>
-                        <a href="social-media.php">Instagram</a>
-                        <a href="social-media.php">Twitter</a>
+
+                <!-- Register Form -->
+                <div class="space-y-8">
+                    <div>
+                        <h2 class="text-4xl font-black uppercase tracking-tighter mb-6">Create Account</h2>
+                        <p class="text-gray-600 text-lg">Join YanKicks and get access to exclusive deals and features.</p>
                     </div>
+
+                    <form class="space-y-6" id="registerForm" action="register.php" method="POST">
+                        <div>
+                            <label class="block text-sm font-bold uppercase tracking-widest text-gray-400 mb-2">Full Name</label>
+                            <input type="text" name="full_name" required class="w-full bg-gray-50 border-none rounded-xl px-4 py-4 text-lg focus:ring-2 focus:ring-black transition-all">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-bold uppercase tracking-widest text-gray-400 mb-2">Email Address</label>
+                            <input type="email" name="email" required class="w-full bg-gray-50 border-none rounded-xl px-4 py-4 text-lg focus:ring-2 focus:ring-black transition-all">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-bold uppercase tracking-widest text-gray-400 mb-2">Password</label>
+                            <input type="password" name="password" required class="w-full bg-gray-50 border-none rounded-xl px-4 py-4 text-lg focus:ring-2 focus:ring-black transition-all">
+                        </div>
+                        <button type="submit" class="w-full bg-black text-white px-10 py-5 rounded-full font-bold text-lg hover:bg-gray-900 transition-all transform hover:scale-105">Create Account</button>
+                    </form>
                 </div>
             </div>
-            <div class="footer-bottom">
-                <p>&copy; 2023 YanKicks. All rights reserved.</p>
-            </div>
         </div>
-    </footer>
+    </section>
+</main>
 
-    <script src="script.js"></script>
-</body>
-</html>
+<?php include 'footer.php'; ?>

@@ -6,8 +6,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $email = $_POST['email'];
     $password = $_POST['password'];
 
-    // Security: Encrypt the password! Never store plain text passwords.
-    $hashed_password = password_hash($password, PASSWORD_DEFAULT);
+    // Store password as plain text (for now)
+    $hashed_password = $password;
 
     $sql = "INSERT INTO users (full_name, email, password) VALUES (?, ?, ?)";
     $stmt = $conn->prepare($sql);
