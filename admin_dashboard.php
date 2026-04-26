@@ -265,21 +265,19 @@ $urgent_restock = !empty($low_stock_products) ? $low_stock_products[0]['name'] :
                     <div class="bg-white p-8 rounded-3xl border border-gray-100 shadow-sm flex flex-col">
                         <h4 class="text-lg font-bold mb-6">Action Required</h4>
                         <div class="flex-1 space-y-4">
-                            <?php 
-                            $pending_count = $conn->query("SELECT COUNT(*) as c FROM orders WHERE status='pending'")->fetch_assoc()['c'];
-                            if($pending_count > 0): 
-                            ?>
-                            <div class="p-4 bg-yellow-50 text-yellow-800 rounded-xl border border-yellow-100">
-                                <p class="font-bold text-sm">🚚 <?php echo $pending_count; ?> Orders to Ship</p>
-                                <p class="text-xs mt-1">You have orders waiting to be processed.</p>
-                            </div>
+                            <?php $pending_count = $conn->query("SELECT COUNT(*) as c FROM orders WHERE status='pending'")->fetch_assoc()['c'];
+                                if($pending_count > 0):?>
+                                    <a href="?view=orders" class="block p-4 bg-yellow-50 text-yellow-800 rounded-xl border border-yellow-100 hover:bg-yellow-100 transition-colors cursor-pointer mb-4">
+                                        <p class="font-bold text-sm">🚚 <?php echo $pending_count; ?> Orders to Ship</p>
+                                        <p class="text-xs mt-1">You have orders waiting to be processed. Click to view.</p>
+                                    </a>
                             <?php endif; ?>
-
+                            <a href="?view=orders">
                             <?php if(count($low_stock_products) > 0): ?>
-                            <div class="p-4 bg-red-50 text-red-800 rounded-xl border border-red-100">
-                                <p class="font-bold text-sm">⚠️ Low Inventory</p>
-                                <p class="text-xs mt-1"><?php echo count($low_stock_products); ?> products are running out of stock.</p>
-                            </div>
+                                <a href="?view=analytics#stock-out-section" class="block p-4 bg-red-50 text-red-800 rounded-xl border border-red-100 hover:bg-red-100 transition-colors cursor-pointer">
+                                    <p class="font-bold text-sm">⚠️ Low Inventory</p>
+                                    <p class="text-xs mt-1"><?php echo count($low_stock_products); ?> products are running out of stock.Click to view</p>
+                                </a>
                             <?php endif; ?>
                         </div>
                     </div>
