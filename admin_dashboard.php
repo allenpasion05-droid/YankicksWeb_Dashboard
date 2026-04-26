@@ -541,7 +541,7 @@ $urgent_restock = !empty($low_stock_products) ? $low_stock_products[0]['name'] :
                     <canvas id="forecastChart"></canvas>
                 </div>
             </div>
-            <div class="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm flex flex-col">
+            <div id="stock-out-section" class="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm flex flex-col">
                 <h4 class="text-sm font-bold uppercase tracking-wider mb-6">Expected Stock-Outs (Low Stock)</h4>
                 <div class="flex-1 space-y-6 mt-4">
                     <?php foreach($low_stock_products as $item): ?>
